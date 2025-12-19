@@ -1,0 +1,53 @@
+@startuml BPMN_Processus
+title BPMN - Processus d'Evaluation des Enseignants
+
+skinparam backgroundColor #FEFEFE
+
+partition "Pool 1: Etudiants" #LightBlue {
+    start
+    :Consulter formulaires disponibles;
+    :Remplir formulaire\n(questionnaire + commentaires);
+    if (Donnees valides?) then (Non)
+        :Corriger les erreurs;
+        -down-> :Remplir formulaire\n(questionnaire + commentaires);
+    else (Oui)
+        :Sauvegarder comme brouillon;
+    endif
+    if (Continuer plus tard?) then (Oui)
+        :Quitter le formulaire;
+        :Brouillon conserve;
+    else (Non)
+        :Soumettre l'evaluation;
+        if (Confirmation?) then (Oui)
+            :Evaluation soumise;
+        else (Non)
+            :Revenir au formulaire;
+            -up-> :Remplir formulaire\n(questionnaire + commentaires);
+        endif
+    endif
+    stop
+}
+
+
+partition "Pool 2: Universite" #LightGreen {
+    start
+    :Reception des evaluations;
+    :Analyser les resultats;
+    if (Creer nouveau formulaire?) then (Oui)
+        :Creer/Modifier formulaire;
+        :Configurer parametres;
+        :Publier le formulaire;
+    else (Non)
+    endif
+    :Compiler les statistiques;
+    if (Generer rapport?) then (Oui)
+        :Generer rapport (PDF/Excel);
+        :Envoyer aux enseignants;
+    else (Non)
+    endif
+    :Visualiser tableau de bord;
+    :Afficher tendances et evolutions;
+    stop
+}
+
+@enduml

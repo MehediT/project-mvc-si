@@ -1,0 +1,272 @@
+@startuml Diagramme_Classes_MVC
+skinparam classBackgroundColor #F0F0F0
+skinparam classBorderColor #333
+
+package "Model" {
+    class Utilisateur {
+        - id: int
+        - nom: string
+        - prenom: string
+        - email: string
+        - motDePasse: string
+        - role: Role
+        - dateCreation: Date
+        --
+        + authentifier(): boolean
+        + obtenirProfil(): void
+        + mettreAJourProfil(): void
+    }
+
+    class Etudiant {
+        - niveauEtude: string
+        - departement: string
+        --
+        + remplirEvaluation(): void
+        + consulterCommentaires(): void
+        + sauvegarderBrouillon(): void
+    }
+
+    class Enseignant {
+        - specialite: string
+        - departement: string
+        - dateEmbauche: Date
+        --
+        + consulterEvaluations(): void
+        + repondreAuxCommentaires(): void
+        + obtenirMoyenneGlobale(): float
+    }
+
+    class Administrateur {
+        - permissionLevel: int
+        - dateNomination: Date
+        --
+        + creerFormulaire(): void
+        + gererUtilisateurs(): void
+        + genererRapports(): void
+        + configureAnonyme(): void
+    }
+
+    class Formulaire {
+        - id: int
+        - titre: string
+        - description: string
+        - enseignant: Enseignant
+        - dateCreation: Date
+        - dateExpiration: Date
+        - estActif: boolean
+        --
+        + ajouter Question(): void
+        + supprimerQuestion(): void
+        + obtenirQuestions(): List<Question>
+    }
+
+    class Question {
+        - id: int
+        - texte: string
+        - type: TypeQuestion
+        - ordreAffichage: int
+        - estObligatoire: boolean
+        --
+        + validerReponse(): boolean
+        + obtenirOptions(): List<string>
+    }
+
+    class Evaluation {
+        - id: int
+        - formulaire: Formulaire
+        - etudiant: Etudiant
+        - dateDebut: Date
+        - dateSoumission: Date
+        - statut: StatutEvaluation
+        - anonyme: boolean
+        --
+        + sauvegarder(): void
+        + soumettre(): void
+        + obtenir Brouillons(): void
+    }
+
+    class Reponse {
+        - id: int
+        - evaluation: Evaluation
+        - question: Question
+        - contenu: string
+        - score: int
+        --
+        + enregistrer(): void
+        + valider(): boolean
+    }
+
+    class Commentaire {
+        - id: int
+        - reponse: Reponse
+        - auteur: Utilisateur
+        - texte: string
+        - dateCreation: Date
+        - estAnonymme: boolean
+        --
+        + poster(): void
+        + repondre(): void
+    }
+
+    class Rapport {
+        - id: int
+        - enseignant: Enseignant
+        - dateGeneration: Date
+        - periodeDebut: Date
+        - periodeFin: Date
+        --
+        + genererPDF(): File
+        + genererExcel(): File
+        + calculerStatistiques(): void
+    }
+
+    class Statistiques {
+        - id: int
+        - enseignant: Enseignant
+        - periode: Period
+        - moyenneGlobale: float
+        - nombreEvaluations: int
+        - tendance: Tendance
+        --
+        + calculerMoyenne(): float
+        + obtenirEvolution(): Chart
+        + comparerAvecPaires(): void
+    }
+
+    ' Relations
+    Utilisateur <|-- Etudiant
+    Utilisateur <|-- Enseignant
+    Utilisateur <|-- Administrateur
+    
+    Formulaire "*" -- "1" Enseignant
+    Question "*" -- "1" Formulaire
+    Evaluation "*" -- "1" Formulaire
+    Evaluation "*" -- "1" Etudiant
+    Reponse "*" -- "1" Evaluation
+    Reponse "*" -- "1" Question
+    Commentaire "*" -- "1" Reponse
+    Commentaire "*" -- "1" Utilisateur
+    Rapport "1" -- "1" Enseignant
+    Statistiques "1" -- "1" Enseignant
+}
+
+package "Contrôleur" {
+    class ControleurAuthentification {
+        - utilisateurCourant: Utilisateur
+        --
+        + login(email, password): boolean
+        + logout(): void
+        + verifierSession(): boolean
+    }
+
+    class ControleurEvaluation {
+        - evaluationCourante: Evaluation
+        --
+        + chargerFormulaire(enseignantID): Formulaire
+        + sauvegarderEvaluation(donnees): void
+        + sauvegarderBrouillon(donnees): void
+        + validerEvaluation(): boolean
+        + soumettreEvaluation(): void
+    }
+
+    class ControleurTableauBord {
+        --
+        + chargerTableauBord(): void
+        + obtenirDonneesAnalytiques(filtres): Statistiques
+        + chargerGraphiques(): void
+        + filtrerParPeriode(debut, fin): void
+    }
+
+    class ControleurFormulaire {
+        --
+        + creerFormulaire(): void
+        + modifierFormulaire(id): void
+        + supprimerFormulaire(id): void
+        + ajouter Question(formulaire): void
+        + previewFormulaire(id): void
+    }
+
+    class ControleurUtilisateurs {
+        --
+        + listerUtilisateurs(): List<Utilisateur>
+        + creerUtilisateur(donnees): void
+        + modifierUtilisateur(id): void
+        + supprimerUtilisateur(id): void
+        + importerUtilisateurs(fichier): void
+    }
+
+    class ControleurRapports {
+        --
+        + genererRapport(enseignantID, periode): Rapport
+        + exporterPDF(rapport): File
+        + exporterExcel(rapport): File
+        + planifierGeneration(parametres): void
+    }
+}
+
+package "Vue" {
+    class VueAuthentification {
+        - formulaireLogin: Form
+        --
+        + afficherPageLogin(): void
+        + afficherErreurAuthentification(): void
+        + redirigerVersAccueil(): void
+    }
+
+    class VueFormulaire {
+        - formulaire: Formulaire
+        --
+        + afficherFormulaire(formulaire): void
+        + afficherProgress(): void
+        + afficherValidation(): void
+        + afficherConfirmation(): void
+    }
+
+    class VueTableauBord {
+        - graphiques: List<Chart>
+        --
+        + afficherTableauBord(): void
+        + afficherGraphiques(): void
+        + afficherFiltres(): void
+        + afficherStatistiques(): void
+    }
+
+    class VueGestionFormulaires {
+        --
+        + afficherListeFormulaires(): void
+        + afficherEditeurfFormulaire(): void
+        + afficherPreview(): void
+    }
+
+    class VueGestionUtilisateurs {
+        --
+        + afficherListeUtilisateurs(): void
+        + afficherEditeurfUtilisateur(): void
+        + afficherImportDialog(): void
+    }
+
+    class VueRapports {
+        --
+        + afficherListeRapports(): void
+        + afficherRapport(): void
+        + afficherExportOptions(): void
+    }
+
+    class VueCommentaires {
+        --
+        + afficherCommentaires(): void
+        + afficherFormulaireReponse(): void
+        + afficherNotifications(): void
+    }
+
+    ' Relations Contrôleur-Vue
+    ControleurAuthentification -- VueAuthentification
+    ControleurEvaluation -- VueFormulaire
+    ControleurTableauBord -- VueTableauBord
+    ControleurFormulaire -- VueGestionFormulaires
+    ControleurUtilisateurs -- VueGestionUtilisateurs
+    ControleurRapports -- VueRapports
+}
+
+@enduml
+

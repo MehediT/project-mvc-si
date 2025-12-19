@@ -1,0 +1,120 @@
+@startuml Etats_Transitions_Navigation
+title Diagramme d'États-Transitions - Navigation du Système
+
+[*] --> PageAccueil
+
+PageAccueil --> PageLogin : Cliquer "Connexion"
+PageLogin --> PageAuthentification : Saisir identifiants
+
+PageAuthentification --> ErreurLogin : Identifiants invalides
+ErreurLogin --> PageLogin : Réessayer
+
+PageAuthentification --> MenuEtudiant : Connexion réussie\n(Rôle = Étudiant)
+PageAuthentification --> MenuEnseignant : Connexion réussie\n(Rôle = Enseignant)
+PageAuthentification --> MenuAdmin : Connexion réussie\n(Rôle = Admin)
+
+' Menu Étudiant
+MenuEtudiant --> ListeFormulaires : Cliquer "Évaluations"
+MenuEtudiant --> ConsulterCommentaires : Cliquer "Commentaires"
+MenuEtudiant --> ProfilEtudiant : Cliquer "Profil"
+MenuEtudiant --> PageAccueil : Cliquer "Déconnexion"
+
+ListeFormulaires --> FormulaireSaisie : Cliquer sur formulaire
+FormulaireSaisie --> BrouillonSauvegarde : Cliquer "Sauvegarder brouillon"
+BrouillonSauvegarde --> FormulaireSaisie : Continuer l'édition
+FormulaireSaisie --> ValidationEval : Cliquer "Soumettre"
+
+ValidationEval --> ConfirmationSubmit : Validation OK
+ConfirmationSubmit --> MenuEtudiant : Cliquer "Retour"
+ValidationEval --> ErreurFormulaire : Validation échouée
+ErreurFormulaire --> FormulaireSaisie : Corriger
+
+ListeFormulaires --> MenuEtudiant : Cliquer "Retour"
+ProfilEtudiant --> MenuEtudiant : Cliquer "Retour"
+ConsulterCommentaires --> MenuEtudiant : Cliquer "Retour"
+
+' Menu Enseignant
+MenuEnseignant --> MesEvaluations : Cliquer "Mes Évaluations"
+MenuEnseignant --> MesCommentaires : Cliquer "Feedback"
+MenuEnseignant --> ProfilEnseignant : Cliquer "Profil"
+MenuEnseignant --> PageAccueil : Cliquer "Déconnexion"
+
+MesEvaluations --> DetailEvaluation : Cliquer sur évaluation
+DetailEvaluation --> ReponseComment : Cliquer "Répondre"
+ReponseComment --> MesEvaluations : Soumettre
+ReponseComment --> MesEvaluations : Annuler
+DetailEvaluation --> MesEvaluations : Cliquer "Retour"
+
+MesCommentaires --> MenuEnseignant : Cliquer "Retour"
+ProfilEnseignant --> MenuEnseignant : Cliquer "Retour"
+
+' Menu Admin
+MenuAdmin --> TableauBord : Cliquer "Tableau de Bord"
+MenuAdmin --> GestionFormulaires : Cliquer "Formulaires"
+MenuAdmin --> GestionUtilisateurs : Cliquer "Utilisateurs"
+MenuAdmin --> GestionRapports : Cliquer "Rapports"
+MenuAdmin --> ConfigSysteme : Cliquer "Configuration"
+MenuAdmin --> PageAccueil : Cliquer "Déconnexion"
+
+TableauBord --> DetailStatistiques : Cliquer sur graphique
+DetailStatistiques --> ExportDonnees : Cliquer "Exporter"
+ExportDonnees --> TableauBord : Export terminé
+DetailStatistiques --> TableauBord : Cliquer "Retour"
+TableauBord --> FiltresTableau : Cliquer "Filtres"
+FiltresTableau --> TableauBord : Appliquer
+
+GestionFormulaires --> ListeFormulairesAdmin : Accès liste
+ListeFormulairesAdmin --> CreationFormulaire : Cliquer "Nouveau"
+CreationFormulaire --> EditionQuestions : Ajouter questions
+EditionQuestions --> PreviewFormulaire : Cliquer "Preview"
+PreviewFormulaire --> EditionQuestions : Modifier
+PreviewFormulaire --> ListeFormulairesAdmin : Valider et publier
+ListeFormulairesAdmin --> ModificationFormulaire : Cliquer "Modifier"
+ModificationFormulaire --> EditionQuestions : Éditer questions
+ListeFormulairesAdmin --> GestionFormulaires : Cliquer "Retour"
+
+GestionUtilisateurs --> ListeUtilisateurs : Accès liste
+ListeUtilisateurs --> CreationUtilisateur : Cliquer "Ajouter"
+CreationUtilisateur --> ListeUtilisateurs : Ajouter
+ListeUtilisateurs --> ModificationUtilisateur : Cliquer "Modifier"
+ModificationUtilisateur --> ListeUtilisateurs : Valider
+ListeUtilisateurs --> ImportUtilisateurs : Cliquer "Importer"
+ImportUtilisateurs --> ListeUtilisateurs : Import effectué
+ListeUtilisateurs --> GestionUtilisateurs : Cliquer "Retour"
+
+GestionRapports --> ListeRapports : Accès liste
+ListeRapports --> GenerationRapport : Cliquer "Générer"
+GenerationRapport --> SelectionPeriode : Choisir paramètres
+SelectionPeriode --> RapportGenere : Générer
+RapportGenere --> ExportRapport : Cliquer "Exporter"
+ExportRapport --> ListeRapports : Téléchargement
+ListeRapports --> GestionRapports : Cliquer "Retour"
+
+ConfigSysteme --> ConfigAnonyme : Cliquer "Anonymat"
+ConfigSysteme --> ConfigNotifications : Cliquer "Notifications"
+ConfigSysteme --> MenuAdmin : Cliquer "Retour"
+ConfigAnonyme --> MenuAdmin : Valider
+ConfigNotifications --> MenuAdmin : Valider
+
+note right of PageAccueil
+  Accueil publique
+  sans authentification
+end note
+
+note right of MenuEtudiant
+  Menu principal Étudiant
+  avec options disponibles
+end note
+
+note right of MenuEnseignant
+  Menu principal Enseignant
+  avec options de feedback
+end note
+
+note right of MenuAdmin
+  Menu principal Admin
+  avec tous les contrôles
+end note
+
+@enduml
+

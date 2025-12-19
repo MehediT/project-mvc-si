@@ -1,0 +1,40 @@
+@startuml Index_Complet_Projet
+title Index Complet du Projet - Systeme d'Evaluation des Enseignants
+
+package "Projet MVC - 6 Etapes" {
+    [Etape 1: Cas Utilisation] as E1
+    [Etape 2: Sequences MVC] as E2
+    [Etape 3: Classes MVC] as E3
+    [Etape 4: Prototypes IHM] as E4
+    [Etape 5: Etats Transitions] as E5
+    [Etape 6: BPMN] as E6
+    
+    [Documentation] as DOC
+}
+
+E1 --> E2
+E2 --> E3
+E3 --> E4
+E4 --> E5
+E5 --> E6
+
+E1 ..> DOC
+E2 ..> DOC
+E3 ..> DOC
+E4 ..> DOC
+E5 ..> DOC
+E6 ..> DOC
+
+legend right
+    Etape 1: 01-cas-utilisation.puml
+    Etape 2: 02-sequence-remplir-evaluation.puml
+             03-sequence-tableau-bord.puml
+    Etape 3: 04-diagramme-classes-mvc.puml
+    Etape 4: 07-prototypes-ihm-etudiant.puml
+             08-prototypes-ihm-admin.puml
+    Etape 5: 05-etats-transitions-navigation.puml
+    Etape 6: 06-bpmn-processus.puml
+    Doc:     README.md, SYNTHESE.md
+end legend
+
+@enduml

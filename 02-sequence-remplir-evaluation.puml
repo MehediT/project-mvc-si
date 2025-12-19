@@ -1,0 +1,87 @@
+@startuml Sequence_Remplir_Evaluation
+title Diagramme de Séquence - Cas: Remplir une Évaluation (Scénario Idéal)
+
+participant "Étudiant" as Etudiant
+participant "Interface\nPresentation" as Presentation
+participant "Contrôleur\nEvaluation" as Controle
+participant "Modèle\nEvaluation" as Model
+participant "Base de Données" as BD
+
+== Scénario Idéal ==
+Etudiant -> Presentation: Accéder au formulaire d'évaluation
+activate Presentation
+Presentation -> Controle: chargerFormulaire(enseignantID)
+activate Controle
+Controle -> Model: obtenirQuestionsFormulaire(enseignantID)
+activate Model
+Model -> BD: SELECT * FROM Questionnaires WHERE enseignant_id = ?
+activate BD
+BD --> Model: Liste des questions
+deactivate BD
+Model --> Controle: Questionnaires
+deactivate Model
+Controle --> Presentation: Données du formulaire
+deactivate Controle
+Presentation --> Etudiant: Afficher le formulaire
+deactivate Presentation
+
+Etudiant -> Presentation: Remplir les réponses
+activate Presentation
+note over Etudiant, Presentation
+  L'étudiant remplir les réponses
+  et les commentaires anonymes
+end note
+Presentation -> Etudiant: Afficher les champs de réponse
+deactivate Presentation
+
+Etudiant -> Presentation: Valider et soumettre
+activate Presentation
+Presentation -> Controle: sauvegarderEvaluation(données)
+activate Controle
+Controle -> Model: enregistrerReponses(idFormulaire, reponses)
+activate Model
+Model -> BD: INSERT INTO Reponses VALUES (...)
+activate BD
+BD --> Model: Confirmation d'insertion
+deactivate BD
+Model --> Controle: Succès
+deactivate Model
+Controle -> Presentation: Succès avec ID évaluation
+deactivate Controle
+Presentation --> Etudiant: Message de confirmation
+deactivate Presentation
+
+== Alternative 1: Données Invalides ==
+Etudiant -> Presentation: Soumettre avec données invalides
+activate Presentation
+Presentation -> Controle: sauvegarderEvaluation(données invalides)
+activate Controle
+Controle -> Model: validerDonnees(reponses)
+activate Model
+Model --> Controle: Erreur validation
+deactivate Model
+Controle --> Presentation: Erreur
+deactivate Controle
+Presentation --> Etudiant: Afficher les erreurs et conseils
+deactivate Presentation
+
+== Alternative 2: Sauvegarde Brouillon ==
+Etudiant -> Presentation: Sauvegarder comme brouillon
+activate Presentation
+Presentation -> Controle: sauvegarderBrouillon(données partielles)
+activate Controle
+Controle -> Model: enregistrerBrouillon(données)
+activate Model
+Model -> BD: INSERT INTO Brouillons VALUES (...)
+activate BD
+BD --> Model: OK
+deactivate BD
+Model --> Controle: OK
+deactivate Model
+Controle --> Presentation: Brouillon sauvegardé
+deactivate Controle
+Presentation --> Etudiant: "Brouillon sauvegardé - Vous pouvez continuer plus tard"
+deactivate Presentation
+
+@enduml
+

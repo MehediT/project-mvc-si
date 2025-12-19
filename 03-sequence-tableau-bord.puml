@@ -1,0 +1,103 @@
+@startuml Sequence_Tableau_Bord
+title Diagramme de Séquence - Cas: Consulter Tableau de Bord (Scénario Idéal)
+
+participant "Administrateur" as Admin
+participant "Interface\nPresentation" as Presentation
+participant "Contrôleur\nTableau" as Controle
+participant "Modèle\nAnalytiques" as Model
+participant "Base de Données" as BD
+
+== Scénario Idéal ==
+Admin -> Presentation: Accéder au tableau de bord
+activate Presentation
+Presentation -> Controle: chargerTableauBord()
+activate Controle
+Controle -> Model: obtenirDonneesAnalytiques()
+activate Model
+
+Model -> BD: SELECT COUNT(*) FROM Evaluations WHERE date >= ?
+activate BD
+BD --> Model: Nombre évaluations
+deactivate BD
+
+Model -> BD: SELECT AVG(score) FROM Reponses GROUP BY enseignant_id
+activate BD
+BD --> Model: Moyennes par enseignant
+deactivate BD
+
+Model -> BD: SELECT * FROM Evolutionscores WHERE periode = CURRENT
+activate BD
+BD --> Model: Évolution temporelle
+deactivate BD
+
+Model --> Controle: Données analytiques compilées
+deactivate Model
+
+Controle -> Presentation: Graphiques et statistiques
+deactivate Controle
+Presentation --> Admin: Afficher le tableau de bord complet
+deactivate Presentation
+
+note over Admin, Presentation
+  Dashboard avec :
+  - Graphiques de performance
+  - Comparaisons enseignants
+  - Tendances temporelles
+end note
+
+== Alternative 1: Filtrage par Période ==
+Admin -> Presentation: Sélectionner période personnalisée
+activate Presentation
+Presentation -> Controle: chargerTableauBord(dateDebut, dateFin)
+activate Controle
+Controle -> Model: obtenirDonneesAnalytiques(dateDebut, dateFin)
+activate Model
+Model -> BD: SELECT * FROM Evaluations WHERE date BETWEEN ? AND ?
+activate BD
+BD --> Model: Évaluations filtrées
+deactivate BD
+Model --> Controle: Données filtrées
+deactivate Model
+Controle --> Presentation: Graphiques actualisés
+deactivate Controle
+Presentation --> Admin: Afficher données période spécifiée
+deactivate Presentation
+
+== Alternative 2: Génération de Rapport ==
+Admin -> Presentation: Générer rapport PDF
+activate Presentation
+Presentation -> Controle: genererRapport()
+activate Controle
+Controle -> Model: compilezDonneesRapport()
+activate Model
+Model -> BD: SELECT * FROM Evaluations, Enseignants, Reponses
+activate BD
+BD --> Model: Données complètes
+deactivate BD
+Model --> Controle: Rapport compilé
+deactivate Model
+Controle -> Presentation: Fichier PDF généré
+deactivate Controle
+Presentation --> Admin: Télécharger rapport
+deactivate Presentation
+
+== Alternative 3: Erreur d'Accès aux Données ==
+Admin -> Presentation: Charger le tableau
+activate Presentation
+Presentation -> Controle: chargerTableauBord()
+activate Controle
+Controle -> Model: obtenirDonneesAnalytiques()
+activate Model
+Model -> BD: SELECT * FROM Evaluations
+activate BD
+BD --> Model: Erreur connexion BD
+deactivate BD
+Model --> Controle: Erreur
+deactivate Model
+Controle --> Presentation: Message d'erreur
+deactivate Controle
+Presentation --> Admin: "Erreur: Impossible de charger les données. Veuillez réessayer."
+deactivate Presentation
+
+@enduml
+
