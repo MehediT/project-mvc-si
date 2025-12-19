@@ -7,6 +7,8 @@ skinparam ranksep 60
 
 left to right direction
 
+' note top : Tous les acteurs sont authentifiés par défaut
+
 actor "Enseignant" as Enseignant
 actor "Administrateur" as Admin
 
@@ -14,8 +16,8 @@ actor "Étudiant" as Etudiant
 
 rectangle "Système d'Évaluation des Enseignants" {
 
-  ' ===== Authentification commune =====
-  usecase "Authentification" as Auth
+  ' ' ===== Authentification commune =====
+  ' usecase "Authentification" as Auth
 
   ' ===== Zone Étudiant =====
   package "Fonctionnalités Étudiant" {
@@ -45,11 +47,11 @@ rectangle "Système d'Évaluation des Enseignants" {
 Admin --|> Enseignant
 
 ' ===== Liens acteurs =====
-Etudiant --> Auth
+' Etudiant --> Auth
 Etudiant --> RemplirEval
 Etudiant --> ConsulterCom
 
-Enseignant --> Auth
+' Enseignant --> Auth
 Enseignant --> ConsulterEvalPers
 Enseignant --> InteragirFeedback
 
