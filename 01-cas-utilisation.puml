@@ -1,5 +1,4 @@
 @startuml Cas_Utilisation
-!theme plain
 skinparam linetype ortho
 skinparam lineStyle jumps
 skinparam nodesep 50
@@ -9,10 +8,11 @@ left to right direction
 
 ' note top : Tous les acteurs sont authentifiés par défaut
 
-actor "Enseignant" as Enseignant
-actor "Administrateur" as Admin
-
-actor "Étudiant" as Etudiant
+' Acteurs à gauche
+together {
+  actor "Enseignant" as Enseignant
+  actor "Administrateur" as Admin
+}
 
 rectangle "Système d'Évaluation des Enseignants" {
 
@@ -43,6 +43,9 @@ rectangle "Système d'Évaluation des Enseignants" {
   }
 }
 
+' Acteur à droite
+actor "Étudiant" as Etudiant
+
 ' ===== Héritage =====
 Admin --|> Enseignant
 
@@ -64,7 +67,7 @@ Admin --> VizEvolution
 Admin --> ExportDatas
 
 ' ===== Relations UML internes =====
-RemplirEval ..> CreerForm : <<uses>>
-ConsulterTBD ..> GenRapports : <<includes>>
+RemplirEval ..> CreerForm : <<include>>
+ConsulterTBD ..> GenRapports : <<include>>
 
 @enduml
