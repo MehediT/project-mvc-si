@@ -4,134 +4,123 @@ title Prototypes d'Interfaces - Flux Étudiant
 scale 1.2
 
 ' ==== PAGE ACCUEIL ====
-card "PAGE ACCUEIL" {
-    rectangle [
-        ================================
-        🎓 Système d'Évaluation
-        
-        [ Connexion ]  [ Inscription ]
-        
-        ---- 
-        Espace Étudiant
-        Remplissez les évaluations
-        des enseignants
-        ================================
-    ]
-}
+card "PAGE ACCUEIL" as PageAccueil
+note right of PageAccueil
+    ================================
+    🎓 Système d'Évaluation
+    
+    [ Connexion ]  [ Inscription ]
+    
+    ---- 
+    Espace Étudiant
+    Remplissez les évaluations
+    des enseignants
+    ================================
+end note
 
 ' ==== PAGE CONNEXION ====
-card "PAGE CONNEXION" {
-    rectangle [
-        ================================
-        📝 Connexion
-        
-        Email: [________________]
-        Mot de passe: [________________]
-        
-        [ Se connecter ]  [ Oublié? ]
-        
-        Pas de compte?
-        [ S'inscrire ]
-        ================================
-    ]
-}
+card "PAGE CONNEXION" as PageConnexion
+note right of PageConnexion
+    ================================
+    📝 Connexion
+    
+    Email: [________________]
+    Mot de passe: [________________]
+    
+    [ Se connecter ]  [ Oublié? ]
+    
+    Pas de compte?
+    [ S'inscrire ]
+    ================================
+end note
 
 ' ==== MENU PRINCIPAL ÉTUDIANT ====
-card "MENU PRINCIPAL - ÉTUDIANT" {
-    rectangle [
-        ================================
-        🏠 Accueil
-        ├─ Bonjour, [Prénom]
-        │
-        ├─ 📋 Mes Évaluations
-        │  └─ (3 formulaires en attente)
-        │
-        ├─ 💬 Commentaires
-        │  └─ (5 nouveaux commentaires)
-        │
-        ├─ 👤 Mon Profil
-        │  └─ Voir/modifier infos
-        │
-        └─ 🔚 Déconnexion
-        ================================
-    ]
-}
+card "MENU PRINCIPAL - ÉTUDIANT" as MenuEtudiant
+note right of MenuEtudiant
+    ================================
+    🏠 Accueil
+    ├─ Bonjour, [Prénom]
+    │
+    ├─ 📋 Mes Évaluations
+    │  └─ (3 formulaires en attente)
+    │
+    ├─ 💬 Commentaires
+    │  └─ (5 nouveaux commentaires)
+    │
+    ├─ 👤 Mon Profil
+    │  └─ Voir/modifier infos
+    │
+    └─ 🔚 Déconnexion
+    ================================
+end note
 
 ' ==== LISTE DES FORMULAIRES ====
-card "LISTE DES FORMULAIRES" {
-    rectangle [
-        ================================
-        📋 Mes Évaluations Disponibles
-        
-        [ Filtre: Tous | Actifs | Brouillons ]
-        
-        1️⃣  M. Jean DUPONT (Mathématiques)
-           Période: 01-12 au 31-12
-           Statut: 🔴 À faire
-           [ Commencer ]
-        
-        2️⃣  Mme Marie MARTIN (Physique)
-           Période: 01-12 au 31-12
-           Statut: 🟡 Brouillon (50%)
-           [ Continuer ]
-        
-        3️⃣  M. Pierre BERNARD (Chimie)
-           Période: 01-12 au 31-12
-           Statut: 🟢 Soumise
-           [ Voir ]
-        
-        [Précédent] [1/3] [Suivant]
-        ================================
-    ]
-}
+card "LISTE DES FORMULAIRES" as ListeFormulaires
+note right of ListeFormulaires
+    ================================
+    📋 Mes Évaluations Disponibles
+    
+    [ Filtre: Tous | Actifs | Brouillons ]
+    
+    1️⃣  M. Jean DUPONT (Mathématiques)
+       Période: 01-12 au 31-12
+       Statut: 🔴 À faire
+       [ Commencer ]
+    
+    2️⃣  Mme Marie MARTIN (Physique)
+       Période: 01-12 au 31-12
+       Statut: 🟡 Brouillon (50%)
+       [ Continuer ]
+    
+    3️⃣  M. Pierre BERNARD (Chimie)
+       Période: 01-12 au 31-12
+       Statut: 🟢 Soumise
+       [ Voir ]
+    
+    [Précédent] [1/3] [Suivant]
+    ================================
+end note
 
 ' ==== FORMULAIRE D'ÉVALUATION ====
-card "FORMULAIRE D'ÉVALUATION" {
-    rectangle [
-        ================================
-        📝 Évaluation: M. Jean DUPONT
-        Progression: █████░░░░░ 50%
-        
-        Question 1 of 10:
-        "La clarté de l'exposition"
-        
-        Très faible ○  Faible ○  Moyen ○
-        Bon ○  Très bon ○
-        
-        [Commentaire optionnel]
-        ████████████████ (max 500)
-        
-        [Précédent] [Sauvegarder] [Suivant]
-        
-        ✓ Sauvegarder comme brouillon
-        ================================
-    ]
-}
+card "FORMULAIRE D'ÉVALUATION" as FormulaireEvaluation
+note right of FormulaireEvaluation
+    ================================
+    📝 Évaluation: M. Jean DUPONT
+    Progression: █████░░░░░ 50%
+    
+    Question 1 of 10:
+    "La clarté de l'exposition"
+    
+    Très faible ○  Faible ○  Moyen ○
+    Bon ○  Très bon ○
+    
+    [Commentaire optionnel]
+    ████████████████ (max 500)
+    
+    [Précédent] [Sauvegarder] [Suivant]
+    
+    ✓ Sauvegarder comme brouillon
+    ================================
+end note
 
 ' ==== CONFIRMATION SUBMISSION ====
-card "CONFIRMATION SOUMISSION" {
-    rectangle [
-        ================================
-        ✅ Évaluation soumise avec succès!
-        
-        Enseignant: M. Jean DUPONT
-        Date: 19/12/2025 14:30
-        
-        Vos commentaires sont anonymes.
-        Merci de votre participation!
-        
-        [ Retour aux évaluations ]
-        [ Aller à l'accueil ]
-        ================================
-    ]
-}
+card "CONFIRMATION SOUMISSION" as ConfirmationSoumission
+note right of ConfirmationSoumission
+    ================================
+    ✅ Évaluation soumise avec succès!
+    
+    Enseignant: M. Jean DUPONT
+    Date: 19/12/2025 14:30
+    
+    Vos commentaires sont anonymes.
+    Merci de votre participation!
+    
+    [ Retour aux évaluations ]
+    [ Aller à l'accueil ]
+    ================================
+end note
 
-PAGE ACCUEIL --> PAGE CONNEXION : Click "Connexion"
-PAGE CONNEXION --> MENU\ PRINCIPAL\ -\ ÉTUDIANT : Login OK
-MENU\ PRINCIPAL\ -\ ÉTUDIANT --> LISTE\ DES\ FORMULAIRES : Click "Évaluations"
-LISTE\ DES\ FORMULAIRES --> FORMULAIRE\ D\'ÉVALUATION : Click "Commencer"
-FORMULAIRE\ D\'ÉVALUATION --> CONFIRMATION\ SOUMISSION : Click "Soumettre"
-CONFIRMATION\ SOUMISSION --> MENU\ PRINCIPAL\ -\ ÉTUDIANT : Click "Retour"
+' Diagramme de prototypes d'interface étudiant
+' Les transitions sont représentées dans le diagramme d'états-transitions
 
 @enduml
-

@@ -4,180 +4,170 @@ title Prototypes d'Interfaces - Flux Administrateur
 scale 1.2
 
 ' ==== MENU PRINCIPAL ADMIN ====
-card "MENU PRINCIPAL - ADMIN" {
-    rectangle [
-        ================================
-        🔐 Tableau de Bord Admin
-        Connecté: Admin (Pédagogique)
-        
-        ├─ 📊 Tableau de Bord
-        │  └─ Vue d'ensemble
-        │
-        ├─ 📋 Gestion Formulaires
-        │  └─ Créer/Modifier
-        │
-        ├─ 👥 Gestion Utilisateurs
-        │  └─ Ajouter/Modifier
-        │
-        ├─ 📄 Rapports
-        │  └─ Générer/Exporter
-        │
-        ├─ ⚙️  Configuration
-        │  └─ Anonymat, etc.
-        │
-        └─ 🔚 Déconnexion
-        ================================
-    ]
-}
+card "MENU PRINCIPAL - ADMIN" as MenuAdmin
+note right of MenuAdmin
+    ================================
+    🔐 Tableau de Bord Admin
+    Connecté: Admin (Pédagogique)
+    
+    ├─ 📊 Tableau de Bord
+    │  └─ Vue d'ensemble
+    │
+    ├─ 📋 Gestion Formulaires
+    │  └─ Créer/Modifier
+    │
+    ├─ 👥 Gestion Utilisateurs
+    │  └─ Ajouter/Modifier
+    │
+    ├─ 📄 Rapports
+    │  └─ Générer/Exporter
+    │
+    ├─ ⚙️  Configuration
+    │  └─ Anonymat, etc.
+    │
+    └─ 🔚 Déconnexion
+    ================================
+end note
 
 ' ==== TABLEAU DE BORD ====
-card "TABLEAU DE BORD" {
-    rectangle [
-        ================================
-        📊 Tableau de Bord Analytique
-        Période: [ 01/12 - 31/12 ]
-        
-        [Actualiser] [Exporter] [Filtres]
-        
-        ┌─────────────────────────────┐
-        │ Statistiques Globales       │
-        │ Total évaluations: 245      │
-        │ Taux complétion: 87%        │
-        │ Enseignants: 32             │
-        └─────────────────────────────┘
-        
-        ┌──────────────┐ ┌──────────────┐
-        │ Score Moyen  │ │ Distribution │
-        │     4.2/5    │ │    ▄▄▄▄▄     │
-        │              │ │    ▂▅▇▅▂     │
-        └──────────────┘ └──────────────┘
-        
-        Top 3 Enseignants:
-        1. M. Dupont (4.8) ⭐⭐⭐⭐⭐
-        2. Mme Martin (4.6) ⭐⭐⭐⭐⭐
-        3. M. Bernard (4.4) ⭐⭐⭐⭐
-        
-        [Détails] [Comparaison]
-        ================================
-    ]
-}
+card "TABLEAU DE BORD" as TableauBord
+note right of TableauBord
+    ================================
+    📊 Tableau de Bord Analytique
+    Période: [ 01/12 - 31/12 ]
+    
+    [Actualiser] [Exporter] [Filtres]
+    
+    ┌─────────────────────────────┐
+    │ Statistiques Globales       │
+    │ Total évaluations: 245      │
+    │ Taux complétion: 87%         │
+    │ Enseignants: 32              │
+    └─────────────────────────────┘
+    
+    ┌──────────────┐ ┌──────────────┐
+    │ Score Moyen  │ │ Distribution │
+    │     4.2/5    │ │    ▄▄▄▄▄     │
+    │              │ │    ▂▅▇▅▂     │
+    └──────────────┘ └──────────────┘
+    
+    Top 3 Enseignants:
+    1. M. Dupont (4.8) ⭐⭐⭐⭐⭐
+    2. Mme Martin (4.6) ⭐⭐⭐⭐⭐
+    3. M. Bernard (4.4) ⭐⭐⭐⭐
+    
+    [Détails] [Comparaison]
+    ================================
+end note
 
 ' ==== CRÉATION FORMULAIRE ====
-card "CRÉATION FORMULAIRE" {
-    rectangle [
-        ================================
-        📝 Créer un Formulaire
-        
-        Titre: [Évaluation Q1 - Dupont__]
-        Enseignant: [▼ Jean DUPONT    ]
-        Période début: [01/12/2025    ]
-        Période fin:   [31/12/2025    ]
-        
-        Anonymat: ☑ Commentaires anonymes
-        
-        Questions (3/10):
-        1. ✓ Clarté de l'exposition
-        2. ✓ Disponibilité
-        3. ○ Évaluation (ajouter)
-        
-        [+ Ajouter Question]
-        
-        [Annuler] [Aperçu] [Publier]
-        ================================
-    ]
-}
+card "CRÉATION FORMULAIRE" as CreationFormulaire
+note right of CreationFormulaire
+    ================================
+    📝 Créer un Formulaire
+    
+    Titre: [Évaluation Q1 - Dupont__]
+    Enseignant: [▼ Jean DUPONT    ]
+    Période début: [01/12/2025    ]
+    Période fin:   [31/12/2025    ]
+    
+    Anonymat: ☑ Commentaires anonymes
+    
+    Questions (3/10):
+    1. ✓ Clarté de l'exposition
+    2. ✓ Disponibilité
+    3. ○ Évaluation (ajouter)
+    
+    [+ Ajouter Question]
+    
+    [Annuler] [Aperçu] [Publier]
+    ================================
+end note
 
 ' ==== GESTION UTILISATEURS ====
-card "GESTION UTILISATEURS" {
-    rectangle [
-        ================================
-        👥 Gestion des Utilisateurs
-        
-        [+ Ajouter] [Importer] [Exporter]
-        
-        Filtre: [Tous ▼] Recherche: [____]
-        
-        │ Nom       │ Email          │ Rôle      │
-        ├───────────┼────────────────┼───────────┤
-        │ DUPONT    │ dupont@efrei   │ Enseignant│
-        │ MARTIN    │ martin@efrei   │ Enseignant│
-        │ JEAN      │ jean@efrei     │ Étudiant  │
-        │ PAUL      │ paul@efrei     │ Étudiant  │
-        
-        [Modifier] [Supprimer]
-        
-        [◀] Page 1/5 [▶]
-        ================================
-    ]
-}
+card "GESTION UTILISATEURS" as GestionUtilisateurs
+note right of GestionUtilisateurs
+    ================================
+    👥 Gestion des Utilisateurs
+    
+    [+ Ajouter] [Importer] [Exporter]
+    
+    Filtre: [Tous ▼] Recherche: [____]
+    
+    │ Nom       │ Email          │ Rôle      │
+    ├───────────┼────────────────┼───────────┤
+    │ DUPONT    │ dupont@efrei   │ Enseignant│
+    │ MARTIN    │ martin@efrei   │ Enseignant│
+    │ JEAN      │ jean@efrei     │ Étudiant  │
+    │ PAUL      │ paul@efrei     │ Étudiant  │
+    
+    [Modifier] [Supprimer]
+    
+    [◀] Page 1/5 [▶]
+    ================================
+end note
 
 ' ==== GÉNÉRATION RAPPORT ====
-card "GÉNÉRATION RAPPORT" {
-    rectangle [
-        ================================
-        📄 Générer un Rapport
-        
-        Enseignant: [▼ Jean DUPONT    ]
-        Période: [01/12] à [31/12]
-        
-        Format: ○ PDF  ○ Excel  ○ CSV
-        
-        Inclure:
-        ☑ Graphiques
-        ☑ Commentaires (anonymes)
-        ☑ Comparaisons
-        ☑ Tendances
-        ☐ Données brutes
-        
-        [Générer Aperçu]
-        
-        ┌─────────────────────────────┐
-        │ 📊 Rapport généré (85 pages)│
-        │ Taille: 2.5 MB              │
-        │ Généré: 19/12 14:30         │
-        │                             │
-        │ [Télécharger] [Voir]        │
-        └─────────────────────────────┘
-        
-        [Nouvel export] [Retour]
-        ================================
-    ]
-}
+card "GÉNÉRATION RAPPORT" as GenerationRapport
+note right of GenerationRapport
+    ================================
+    📄 Générer un Rapport
+    
+    Enseignant: [▼ Jean DUPONT    ]
+    Période: [01/12] à [31/12]
+    
+    Format: ○ PDF  ○ Excel  ○ CSV
+    
+    Inclure:
+    ☑ Graphiques
+    ☑ Commentaires (anonymes)
+    ☑ Comparaisons
+    ☑ Tendances
+    ☐ Données brutes
+    
+    [Générer Aperçu]
+    
+    ┌─────────────────────────────┐
+    │ 📊 Rapport généré (85 pages)│
+    │ Taille: 2.5 MB              │
+    │ Généré: 19/12 14:30         │
+    │                             │
+    │ [Télécharger] [Voir]        │
+    └─────────────────────────────┘
+    
+    [Nouvel export] [Retour]
+    ================================
+end note
 
 ' ==== CONFIGURATION ====
-card "CONFIGURATION SYSTÈME" {
-    rectangle [
-        ================================
-        ⚙️  Configuration Système
-        
-        ANONYMAT:
-        ☑ Commentaires anonymes
-        ☑ Réponses anonymes
-        
-        NOTIFICATIONS:
-        ☑ Rappels d'évaluation
-        ☑ Rapports disponibles
-        
-        SÉCURITÉ:
-        - Niveau d'anonymat: [Complet ▼]
-        - Archivage automatique: Activé
-        - Chiffrement: AES-256
-        
-        SYSTÈME:
-        - Langue: [Français ▼]
-        - Limite fichier: 50 MB
-        - Sessions actives: 12
-        
-        [Réinitialiser] [Sauvegarder]
-        ================================
-    ]
-}
+card "CONFIGURATION SYSTÈME" as ConfigurationSysteme
+note right of ConfigurationSysteme
+    ================================
+    ⚙️  Configuration Système
+    
+    ANONYMAT:
+    ☑ Commentaires anonymes
+    ☑ Réponses anonymes
+    
+    NOTIFICATIONS:
+    ☑ Rappels d'évaluation
+    ☑ Rapports disponibles
+    
+    SÉCURITÉ:
+    - Niveau d'anonymat: [Complet ▼]
+    - Archivage automatique: Activé
+    - Chiffrement: AES-256
+    
+    SYSTÈME:
+    - Langue: [Français ▼]
+    - Limite fichier: 50 MB
+    - Sessions actives: 12
+    
+    [Réinitialiser] [Sauvegarder]
+    ================================
+end note
 
-MENU\ PRINCIPAL\ -\ ADMIN --> TABLEAU\ DE\ BORD : Click "Tableau de Bord"
-MENU\ PRINCIPAL\ -\ ADMIN --> CRÉATION\ FORMULAIRE : Click "Formulaires"
-MENU\ PRINCIPAL\ -\ ADMIN --> GESTION\ UTILISATEURS : Click "Utilisateurs"
-MENU\ PRINCIPAL\ -\ ADMIN --> GÉNÉRATION\ RAPPORT : Click "Rapports"
-MENU\ PRINCIPAL\ -\ ADMIN --> CONFIGURATION\ SYSTÈME : Click "Configuration"
+' Diagramme de prototypes d'interface administrateur
+' Les transitions sont représentées dans le diagramme d'états-transitions
 
 @enduml
-
