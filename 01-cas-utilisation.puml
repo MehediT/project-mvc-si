@@ -23,12 +23,27 @@ rectangle "Système d'Évaluation des Enseignants" {
   package "Fonctionnalités Étudiant" {
     usecase "Remplir Évaluation" as RemplirEval
     usecase "Consulter Commentaires" as ConsulterCom
+    usecase "Recevoir Rappels\nAutomatiques" as RecevoirRappels
+    usecase "Sauvegarder Brouillon" as SauvegarderBrouillon
+    usecase "Consulter Statistiques\nGlobales" as ConsulterStatsGlobales
   }
 
   ' ===== Zone Enseignant =====
   package "Fonctionnalités Enseignant" {
     usecase "Consulter Évaluations\nPersonnelles" as ConsulterEvalPers
     usecase "Interagir avec Feedback" as InteragirFeedback
+    usecase "Résumer Évaluations IA" as ResumerEvalIA
+    usecase "Détecter Sentiment" as DetectarSentiment
+    usecase "Recevoir Recommandations\nPersonnalisées" as RecevoirRecommandations
+    usecase "Comparer avec Pairs" as ComparerPairs
+    usecase "Recevoir Notifications\nEmail" as RecevoirNotifications
+    usecase "Consulter Badges" as ConsulterBadges
+    usecase "Consulter Historique\nAméliorations" as ConsulterHistorique
+    usecase "Planifier Actions\nAmélioration" as PlanifierActions
+    usecase "Répondre aux Commentaires" as RepondreCommentaires
+    usecase "Exporter Rapports\nPersonnels" as ExporterRapportsPerso
+    usecase "Consulter Évaluations\nTemps Réel" as ConsulterTempsReel
+    usecase "Rechercher dans\nÉvaluations" as RechercherEval
   }
 
   ' ===== Zone Administrateur =====
@@ -39,7 +54,15 @@ rectangle "Système d'Évaluation des Enseignants" {
     usecase "Générer Rapports" as GenRapports
     usecase "Configurer Anonymat" as ConfigAnon
     usecase "Visualiser Évolution" as VizEvolution
-    usecase "Exporter Données" as ExportDatas
+    usecase "Exporter Données\nMulti-formats" as ExportMultiFormats
+    usecase "Recevoir Alertes\nTendances" as RecevoirAlertes
+    usecase "Exporter Données\nAnonymisées" as ExportAnonymise
+    usecase "Gérer Périodes\nÉvaluation" as GererPeriodes
+    usecase "Configurer Seuils\nAlertes" as ConfigurerSeuils
+    usecase "Valider Évaluations" as ValiderEvaluations
+    usecase "Gérer Départements" as GererDepartements
+    usecase "Analyser Qualité\nDonnées" as AnalyserQualite
+    usecase "Gérer Modèles IA" as GererModelesIA
   }
 }
 
@@ -53,10 +76,25 @@ Admin --|> Enseignant
 ' Etudiant --> Auth
 Etudiant --> RemplirEval
 Etudiant --> ConsulterCom
+Etudiant --> RecevoirRappels
+Etudiant --> SauvegarderBrouillon
+Etudiant --> ConsulterStatsGlobales
 
 ' Enseignant --> Auth
 Enseignant --> ConsulterEvalPers
 Enseignant --> InteragirFeedback
+Enseignant --> ResumerEvalIA
+Enseignant --> DetectarSentiment
+Enseignant --> RecevoirRecommandations
+Enseignant --> ComparerPairs
+Enseignant --> RecevoirNotifications
+Enseignant --> ConsulterBadges
+Enseignant --> ConsulterHistorique
+Enseignant --> PlanifierActions
+Enseignant --> RepondreCommentaires
+Enseignant --> ExporterRapportsPerso
+Enseignant --> ConsulterTempsReel
+Enseignant --> RechercherEval
 
 Admin --> ConsulterTBD
 Admin --> GererUsers
@@ -64,10 +102,34 @@ Admin --> CreerForm
 Admin --> GenRapports
 Admin --> ConfigAnon
 Admin --> VizEvolution
-Admin --> ExportDatas
+Admin --> ExportMultiFormats
+Admin --> RecevoirAlertes
+Admin --> ExportAnonymise
+Admin --> GererPeriodes
+Admin --> ConfigurerSeuils
+Admin --> ValiderEvaluations
+Admin --> GererDepartements
+Admin --> AnalyserQualite
+Admin --> GererModelesIA
 
 ' ===== Relations UML internes =====
 RemplirEval ..> CreerForm : <<include>>
+RemplirEval ..> SauvegarderBrouillon : <<extend>>
 ConsulterTBD ..> GenRapports : <<include>>
+ResumerEvalIA ..> ConsulterEvalPers : <<include>>
+DetectarSentiment ..> ConsulterEvalPers : <<include>>
+RecevoirRecommandations ..> ResumerEvalIA : <<include>>
+ComparerPairs ..> ConsulterEvalPers : <<include>>
+ConsulterHistorique ..> ConsulterEvalPers : <<include>>
+PlanifierActions ..> RecevoirRecommandations : <<include>>
+RepondreCommentaires ..> InteragirFeedback : <<include>>
+ExporterRapportsPerso ..> ConsulterEvalPers : <<include>>
+ConsulterTempsReel ..> ConsulterEvalPers : <<include>>
+RechercherEval ..> ConsulterEvalPers : <<include>>
+GererPeriodes ..> CreerForm : <<include>>
+ConfigurerSeuils ..> RecevoirAlertes : <<include>>
+ValiderEvaluations ..> ConsulterTBD : <<include>>
+AnalyserQualite ..> GenRapports : <<include>>
+GererModelesIA ..> ResumerEvalIA : <<include>>
 
 @enduml
