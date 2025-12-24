@@ -1,120 +1,177 @@
 @startuml Etats_Transitions_Navigation
-title Diagramme d'États-Transitions - Navigation du Système
+title Diagramme d'États-Transitions - Navigation dans les Interfaces (Menu)
 
-[*] --> PageAccueil
+' État initial
+[*] --> PageConnexion
 
-PageAccueil --> PageLogin : Cliquer "Connexion"
-PageLogin --> PageAuthentification : Saisir identifiants
+' Authentification
+PageConnexion --> Authentification : Saisir identifiants\net cliquer "Se connecter"
+Authentification --> PageConnexion : Identifiants invalides
+Authentification --> DashboardEtudiant : Connexion réussie\n(Rôle = Étudiant)
+Authentification --> DashboardEnseignant : Connexion réussie\n(Rôle = Enseignant)
+Authentification --> DashboardAdmin : Connexion réussie\n(Rôle = Admin)
 
-PageAuthentification --> ErreurLogin : Identifiants invalides
-ErreurLogin --> PageLogin : Réessayer
+' ============================================
+' NAVIGATION ÉTUDIANT
+' ============================================
+DashboardEtudiant : Dashboard Étudiant\nRoute: /etudiant/dashboard\nMenu: Dashboard (actif)
 
-PageAuthentification --> MenuEtudiant : Connexion réussie\n(Rôle = Étudiant)
-PageAuthentification --> MenuEnseignant : Connexion réussie\n(Rôle = Enseignant)
-PageAuthentification --> MenuAdmin : Connexion réussie\n(Rôle = Admin)
+EvaluationEtudiant : Page Évaluation\nRoute: /etudiant/evaluation\nMenu: Mes évaluations (actif)
 
-' Menu Étudiant
-MenuEtudiant --> ListeFormulaires : Cliquer "Évaluations"
-MenuEtudiant --> ConsulterCommentaires : Cliquer "Commentaires"
-MenuEtudiant --> ProfilEtudiant : Cliquer "Profil"
-MenuEtudiant --> PageAccueil : Cliquer "Déconnexion"
+StatistiquesEtudiant : Statistiques\nRoute: /etudiant/statistiques\nMenu: Statistiques (actif)\n(à venir)
 
-ListeFormulaires --> FormulaireSaisie : Cliquer sur formulaire
-FormulaireSaisie --> BrouillonSauvegarde : Cliquer "Sauvegarder brouillon"
-BrouillonSauvegarde --> FormulaireSaisie : Continuer l'édition
-FormulaireSaisie --> ValidationEval : Cliquer "Soumettre"
+' Transitions depuis Dashboard Étudiant
+DashboardEtudiant --> EvaluationEtudiant : Cliquer "Mes évaluations"\ndans le menu
+DashboardEtudiant --> StatistiquesEtudiant : Cliquer "Statistiques"\ndans le menu
+DashboardEtudiant --> EvaluationEtudiant : Cliquer "Remplir"\nsur une évaluation
+DashboardEtudiant --> PageConnexion : Cliquer "Déconnexion"
 
-ValidationEval --> ConfirmationSubmit : Validation OK
-ConfirmationSubmit --> MenuEtudiant : Cliquer "Retour"
-ValidationEval --> ErreurFormulaire : Validation échouée
-ErreurFormulaire --> FormulaireSaisie : Corriger
+' Transitions depuis Page Évaluation
+EvaluationEtudiant --> DashboardEtudiant : Cliquer "Dashboard"\ndans le menu
+EvaluationEtudiant --> EvaluationEtudiant : Cliquer "Sauvegarder\ncomme brouillon"
+EvaluationEtudiant --> DashboardEtudiant : Cliquer "Soumettre\nl'évaluation"
+EvaluationEtudiant --> StatistiquesEtudiant : Cliquer "Statistiques"\ndans le menu
+EvaluationEtudiant --> PageConnexion : Cliquer "Déconnexion"
 
-ListeFormulaires --> MenuEtudiant : Cliquer "Retour"
-ProfilEtudiant --> MenuEtudiant : Cliquer "Retour"
-ConsulterCommentaires --> MenuEtudiant : Cliquer "Retour"
+' Transitions depuis Statistiques Étudiant
+StatistiquesEtudiant --> DashboardEtudiant : Cliquer "Dashboard"\ndans le menu
+StatistiquesEtudiant --> EvaluationEtudiant : Cliquer "Mes évaluations"\ndans le menu
+StatistiquesEtudiant --> PageConnexion : Cliquer "Déconnexion"
 
-' Menu Enseignant
-MenuEnseignant --> MesEvaluations : Cliquer "Mes Évaluations"
-MenuEnseignant --> MesCommentaires : Cliquer "Feedback"
-MenuEnseignant --> ProfilEnseignant : Cliquer "Profil"
-MenuEnseignant --> PageAccueil : Cliquer "Déconnexion"
+' ============================================
+' NAVIGATION ENSEIGNANT
+' ============================================
+DashboardEnseignant : Dashboard Enseignant\nRoute: /enseignant/dashboard\nMenu: Dashboard (actif)
 
-MesEvaluations --> DetailEvaluation : Cliquer sur évaluation
-DetailEvaluation --> ReponseComment : Cliquer "Répondre"
-ReponseComment --> MesEvaluations : Soumettre
-ReponseComment --> MesEvaluations : Annuler
-DetailEvaluation --> MesEvaluations : Cliquer "Retour"
+EvaluationsEnseignant : Mes Évaluations\nRoute: /enseignant/evaluations\nMenu: Mes évaluations (actif)
 
-MesCommentaires --> MenuEnseignant : Cliquer "Retour"
-ProfilEnseignant --> MenuEnseignant : Cliquer "Retour"
+AnalyseIA : Analyse IA\nRoute: /enseignant/analyse-ia\nMenu: Analyse IA (actif)
 
-' Menu Admin
-MenuAdmin --> TableauBord : Cliquer "Tableau de Bord"
-MenuAdmin --> GestionFormulaires : Cliquer "Formulaires"
-MenuAdmin --> GestionUtilisateurs : Cliquer "Utilisateurs"
-MenuAdmin --> GestionRapports : Cliquer "Rapports"
-MenuAdmin --> ConfigSysteme : Cliquer "Configuration"
-MenuAdmin --> PageAccueil : Cliquer "Déconnexion"
+BadgesEnseignant : Badges\nRoute: /enseignant/badges\nMenu: Badges (actif)\n(à venir)
 
-TableauBord --> DetailStatistiques : Cliquer sur graphique
-DetailStatistiques --> ExportDonnees : Cliquer "Exporter"
-ExportDonnees --> TableauBord : Export terminé
-DetailStatistiques --> TableauBord : Cliquer "Retour"
-TableauBord --> FiltresTableau : Cliquer "Filtres"
-FiltresTableau --> TableauBord : Appliquer
+ParametresEnseignant : Paramètres\nRoute: /enseignant/parametres\nMenu: Paramètres (actif)\n(à venir)
 
-GestionFormulaires --> ListeFormulairesAdmin : Accès liste
-ListeFormulairesAdmin --> CreationFormulaire : Cliquer "Nouveau"
-CreationFormulaire --> EditionQuestions : Ajouter questions
-EditionQuestions --> PreviewFormulaire : Cliquer "Preview"
-PreviewFormulaire --> EditionQuestions : Modifier
-PreviewFormulaire --> ListeFormulairesAdmin : Valider et publier
-ListeFormulairesAdmin --> ModificationFormulaire : Cliquer "Modifier"
-ModificationFormulaire --> EditionQuestions : Éditer questions
-ListeFormulairesAdmin --> GestionFormulaires : Cliquer "Retour"
+' Transitions depuis Dashboard Enseignant
+DashboardEnseignant --> EvaluationsEnseignant : Cliquer "Mes évaluations"\ndans le menu
+DashboardEnseignant --> AnalyseIA : Cliquer "Analyse IA"\ndans le menu
+DashboardEnseignant --> BadgesEnseignant : Cliquer "Badges"\ndans le menu
+DashboardEnseignant --> ParametresEnseignant : Cliquer "Paramètres"\ndans le menu
+DashboardEnseignant --> PageConnexion : Cliquer "Déconnexion"
 
-GestionUtilisateurs --> ListeUtilisateurs : Accès liste
-ListeUtilisateurs --> CreationUtilisateur : Cliquer "Ajouter"
-CreationUtilisateur --> ListeUtilisateurs : Ajouter
-ListeUtilisateurs --> ModificationUtilisateur : Cliquer "Modifier"
-ModificationUtilisateur --> ListeUtilisateurs : Valider
-ListeUtilisateurs --> ImportUtilisateurs : Cliquer "Importer"
-ImportUtilisateurs --> ListeUtilisateurs : Import effectué
-ListeUtilisateurs --> GestionUtilisateurs : Cliquer "Retour"
+' Transitions depuis Mes Évaluations
+EvaluationsEnseignant --> DashboardEnseignant : Cliquer "Dashboard"\ndans le menu
+EvaluationsEnseignant --> AnalyseIA : Cliquer "Analyse IA"\ndans le menu
+EvaluationsEnseignant --> BadgesEnseignant : Cliquer "Badges"\ndans le menu
+EvaluationsEnseignant --> ParametresEnseignant : Cliquer "Paramètres"\ndans le menu
+EvaluationsEnseignant --> PageConnexion : Cliquer "Déconnexion"
 
-GestionRapports --> ListeRapports : Accès liste
-ListeRapports --> GenerationRapport : Cliquer "Générer"
-GenerationRapport --> SelectionPeriode : Choisir paramètres
-SelectionPeriode --> RapportGenere : Générer
-RapportGenere --> ExportRapport : Cliquer "Exporter"
-ExportRapport --> ListeRapports : Téléchargement
-ListeRapports --> GestionRapports : Cliquer "Retour"
+' Transitions depuis Analyse IA
+AnalyseIA --> DashboardEnseignant : Cliquer "Dashboard"\ndans le menu
+AnalyseIA --> EvaluationsEnseignant : Cliquer "Mes évaluations"\ndans le menu
+AnalyseIA --> BadgesEnseignant : Cliquer "Badges"\ndans le menu
+AnalyseIA --> ParametresEnseignant : Cliquer "Paramètres"\ndans le menu
+AnalyseIA --> PageConnexion : Cliquer "Déconnexion"
 
-ConfigSysteme --> ConfigAnonyme : Cliquer "Anonymat"
-ConfigSysteme --> ConfigNotifications : Cliquer "Notifications"
-ConfigSysteme --> MenuAdmin : Cliquer "Retour"
-ConfigAnonyme --> MenuAdmin : Valider
-ConfigNotifications --> MenuAdmin : Valider
+' Transitions depuis Badges
+BadgesEnseignant --> DashboardEnseignant : Cliquer "Dashboard"\ndans le menu
+BadgesEnseignant --> EvaluationsEnseignant : Cliquer "Mes évaluations"\ndans le menu
+BadgesEnseignant --> AnalyseIA : Cliquer "Analyse IA"\ndans le menu
+BadgesEnseignant --> ParametresEnseignant : Cliquer "Paramètres"\ndans le menu
+BadgesEnseignant --> PageConnexion : Cliquer "Déconnexion"
 
-note right of PageAccueil
-  Accueil publique
-  sans authentification
+' Transitions depuis Paramètres
+ParametresEnseignant --> DashboardEnseignant : Cliquer "Dashboard"\ndans le menu
+ParametresEnseignant --> EvaluationsEnseignant : Cliquer "Mes évaluations"\ndans le menu
+ParametresEnseignant --> AnalyseIA : Cliquer "Analyse IA"\ndans le menu
+ParametresEnseignant --> BadgesEnseignant : Cliquer "Badges"\ndans le menu
+ParametresEnseignant --> PageConnexion : Cliquer "Déconnexion"
+
+' ============================================
+' NAVIGATION ADMIN
+' ============================================
+DashboardAdmin : Dashboard Admin\nRoute: /admin/dashboard\nMenu: Dashboard (actif)
+
+UtilisateursAdmin : Gestion Utilisateurs\nRoute: /admin/utilisateurs\nMenu: Utilisateurs (actif)
+
+FormulairesAdmin : Création Formulaire\nRoute: /admin/formulaires/creer\nMenu: Formulaires (actif)
+
+RapportsAdmin : Génération Rapports\nRoute: /admin/rapports\nMenu: Rapports (actif)
+
+ConfigurationAdmin : Configuration\nRoute: /admin/configuration\nMenu: Configuration (actif)\n(à venir)
+
+' Transitions depuis Dashboard Admin
+DashboardAdmin --> UtilisateursAdmin : Cliquer "Utilisateurs"\ndans le menu
+DashboardAdmin --> FormulairesAdmin : Cliquer "Formulaires"\ndans le menu
+DashboardAdmin --> RapportsAdmin : Cliquer "Rapports"\ndans le menu
+DashboardAdmin --> ConfigurationAdmin : Cliquer "Configuration"\ndans le menu
+DashboardAdmin --> PageConnexion : Cliquer "Déconnexion"
+
+' Transitions depuis Gestion Utilisateurs
+UtilisateursAdmin --> DashboardAdmin : Cliquer "Dashboard"\ndans le menu
+UtilisateursAdmin --> FormulairesAdmin : Cliquer "Formulaires"\ndans le menu
+UtilisateursAdmin --> RapportsAdmin : Cliquer "Rapports"\ndans le menu
+UtilisateursAdmin --> ConfigurationAdmin : Cliquer "Configuration"\ndans le menu
+UtilisateursAdmin --> PageConnexion : Cliquer "Déconnexion"
+
+' Transitions depuis Création Formulaire
+FormulairesAdmin --> DashboardAdmin : Cliquer "Dashboard"\ndans le menu
+FormulairesAdmin --> UtilisateursAdmin : Cliquer "Utilisateurs"\ndans le menu
+FormulairesAdmin --> RapportsAdmin : Cliquer "Rapports"\ndans le menu
+FormulairesAdmin --> ConfigurationAdmin : Cliquer "Configuration"\ndans le menu
+FormulairesAdmin --> FormulairesAdmin : Cliquer "Sauvegarder"
+FormulairesAdmin --> FormulairesAdmin : Cliquer "Prévisualiser"
+FormulairesAdmin --> FormulairesAdmin : Cliquer "Annuler"
+FormulairesAdmin --> PageConnexion : Cliquer "Déconnexion"
+
+' Transitions depuis Génération Rapports
+RapportsAdmin --> DashboardAdmin : Cliquer "Dashboard"\ndans le menu
+RapportsAdmin --> UtilisateursAdmin : Cliquer "Utilisateurs"\ndans le menu
+RapportsAdmin --> FormulairesAdmin : Cliquer "Formulaires"\ndans le menu
+RapportsAdmin --> ConfigurationAdmin : Cliquer "Configuration"\ndans le menu
+RapportsAdmin --> RapportsAdmin : Cliquer "Générer le rapport"
+RapportsAdmin --> RapportsAdmin : Cliquer "Télécharger"
+RapportsAdmin --> PageConnexion : Cliquer "Déconnexion"
+
+' Transitions depuis Configuration
+ConfigurationAdmin --> DashboardAdmin : Cliquer "Dashboard"\ndans le menu
+ConfigurationAdmin --> UtilisateursAdmin : Cliquer "Utilisateurs"\ndans le menu
+ConfigurationAdmin --> FormulairesAdmin : Cliquer "Formulaires"\ndans le menu
+ConfigurationAdmin --> RapportsAdmin : Cliquer "Rapports"\ndans le menu
+ConfigurationAdmin --> PageConnexion : Cliquer "Déconnexion"
+
+' Notes explicatives
+note right of PageConnexion
+  **Page d'accueil publique**
+  Point d'entrée du système
+  Route: /
 end note
 
-note right of MenuEtudiant
-  Menu principal Étudiant
-  avec options disponibles
+note right of DashboardEtudiant
+  **Navigation Étudiant**
+  Menu latéral avec 3 options :
+  - Dashboard
+  - Mes évaluations
+  - Statistiques
 end note
 
-note right of MenuEnseignant
-  Menu principal Enseignant
-  avec options de feedback
+note right of DashboardEnseignant
+  **Navigation Enseignant**
+  Menu latéral avec 5 options :
+  - Dashboard
+  - Mes évaluations
+  - Analyse IA
+  - Badges
+  - Paramètres
 end note
 
-note right of MenuAdmin
-  Menu principal Admin
-  avec tous les contrôles
+note right of DashboardAdmin
+  **Navigation Admin**
+  Menu latéral avec 5 options :
+  - Dashboard
+  - Utilisateurs
+  - Formulaires
+  - Rapports
+  - Configuration
 end note
 
 @enduml
-

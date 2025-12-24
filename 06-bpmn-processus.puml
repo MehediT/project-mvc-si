@@ -1,53 +1,162 @@
 @startuml BPMN_Processus
-title BPMN - Processus d'Evaluation des Enseignants
+title BPMN - Processus d'Évaluation des Enseignants
 
 skinparam backgroundColor #FEFEFE
 
-partition "Pool 1: Etudiants" #LightBlue {
+' ============================================
+' POOL 1 : ÉTUDIANTS
+' ============================================
+partition "Pool 1: Étudiants" #LightBlue {
     start
+    :Se connecter au système;
+    
     :Consulter formulaires disponibles;
+    
+    if (Formulaire disponible?) then (Non)
+        :Attendre publication;
+        stop
+    else (Oui)
+    endif
+    
+    :Sélectionner formulaire d'évaluation;
+    
     :Remplir formulaire\n(questionnaire + commentaires);
-    if (Donnees valides?) then (Non)
+    
+    if (Données valides?) then (Non)
         :Corriger les erreurs;
         -down-> :Remplir formulaire\n(questionnaire + commentaires);
     else (Oui)
-        :Sauvegarder comme brouillon;
     endif
+    
     if (Continuer plus tard?) then (Oui)
+        :Sauvegarder comme brouillon;
+        note right
+            Brouillon conservé
+            Peut être repris plus tard
+        end note
         :Quitter le formulaire;
-        :Brouillon conserve;
+        stop
     else (Non)
-        :Soumettre l'evaluation;
-        if (Confirmation?) then (Oui)
-            :Evaluation soumise;
-        else (Non)
-            :Revenir au formulaire;
-            -up-> :Remplir formulaire\n(questionnaire + commentaires);
-        endif
     endif
+    
+    :Soumettre l'évaluation;
+    note right
+        Message vers Pool 2:
+        Évaluation transmise
+        à l'Université
+    end note
+    
+    if (Confirmation?) then (Oui)
+        :Évaluation soumise;
+        note right
+            Évaluation anonymisée
+            et enregistrée
+        end note
+    else (Non)
+        :Revenir au formulaire;
+        -up-> :Remplir formulaire\n(questionnaire + commentaires);
+    endif
+    
+    :Recevoir confirmation;
+    note right
+        Message depuis Pool 2:
+        Confirmation de réception
+    end note
     stop
 }
 
-
-partition "Pool 2: Universite" #LightGreen {
+' ============================================
+' POOL 2 : UNIVERSITÉ
+' ============================================
+partition "Pool 2: Université" #LightGreen {
     start
-    :Reception des evaluations;
-    :Analyser les resultats;
-    if (Creer nouveau formulaire?) then (Oui)
-        :Creer/Modifier formulaire;
-        :Configurer parametres;
+    :Initialiser période d'évaluation;
+    
+    if (Créer nouveau formulaire?) then (Oui)
+        :Créer/Modifier formulaire;
+        :Définir questions;
+        :Configurer paramètres\n(période, anonymat, etc.);
         :Publier le formulaire;
+        note left
+            Message vers Pool 1:
+            Formulaire disponible
+            pour les étudiants
+        end note
     else (Non)
+        :Utiliser formulaire existant;
     endif
+    
+    :Attendre réception des évaluations;
+    
+    :Reception des évaluations;
+    note left
+        Message depuis Pool 1:
+        Évaluations reçues
+        des étudiants
+    end note
+    
+    :Valider les évaluations reçues;
+    
+    if (Évaluations valides?) then (Non)
+        :Rejeter évaluations invalides;
+        -down-> :Attendre réception des évaluations;
+    else (Oui)
+    endif
+    
+    :Enregistrer les évaluations;
+    :Anonymiser les données;
+    
+    :Analyser les résultats;
+    note left
+        Calcul des moyennes
+        Analyse des commentaires
+        Détection de sentiment (IA)
+    end note
+    
     :Compiler les statistiques;
-    if (Generer rapport?) then (Oui)
-        :Generer rapport (PDF/Excel);
-        :Envoyer aux enseignants;
+    
+    if (Générer rapport?) then (Oui)
+        :Générer rapport (PDF/Excel/CSV);
+        :Envoyer rapport aux enseignants;
+        note left
+            Rapports personnalisés
+            par enseignant
+        end note
     else (Non)
     endif
-    :Visualiser tableau de bord;
-    :Afficher tendances et evolutions;
-    stop
+    
+    :Mettre à jour tableau de bord;
+    :Visualiser tendances et évolutions;
+    
+    :Envoyer confirmation;
+    note left
+        Message vers Pool 1:
+        Confirmation de réception
+        envoyée aux étudiants
+    end note
+    
+    if (Période terminée?) then (Oui)
+        :Finaliser période d'évaluation;
+        :Archiver les données;
+        stop
+    else (Non)
+        -up-> :Attendre réception des évaluations;
+    endif
 }
+
+' ============================================
+' NOTES EXPLICATIVES
+' ============================================
+' Pool Étudiants:
+'   - Remplir évaluations
+'   - Sauvegarder brouillons
+'   - Soumettre évaluations
+'
+' Pool Université:
+'   - Créer et publier formulaires
+'   - Recevoir et valider évaluations
+'   - Analyser résultats
+'   - Générer rapports
+'   - Gérer statistiques
 
 @enduml
