@@ -1,87 +1,167 @@
 @startuml Sequence_Remplir_Evaluation
-title Diagramme de Séquence - Cas: Remplir une Évaluation (Scénario Idéal)
+title Diagramme de Séquence - Cas: Remplir une Évaluation (MVC)
 
 participant "Étudiant" as Etudiant
-participant "Interface\nPresentation" as Presentation
-participant "Contrôleur\nEvaluation" as Controle
-participant "Modèle\nEvaluation" as Model
-participant "Base de Données" as BD
+participant "Vue\nEvaluation" as Vue
+participant "Contrôleur\nEvaluation" as Controleur
+participant "Modèle\nEvaluation" as Modele
+participant "Modèle\nFormulaire" as ModeleForm
+participant "Modèle\nBrouillon" as ModeleBrouillon
 
 == Scénario Idéal ==
-Etudiant -> Presentation: Accéder au formulaire d'évaluation
-activate Presentation
-Presentation -> Controle: chargerFormulaire(enseignantID)
-activate Controle
-Controle -> Model: obtenirQuestionsFormulaire(enseignantID)
-activate Model
-Model -> BD: SELECT * FROM Questionnaires WHERE enseignant_id = ?
-activate BD
-BD --> Model: Liste des questions
-deactivate BD
-Model --> Controle: Questionnaires
-deactivate Model
-Controle --> Presentation: Données du formulaire
-deactivate Controle
-Presentation --> Etudiant: Afficher le formulaire
-deactivate Presentation
 
-Etudiant -> Presentation: Remplir les réponses
-activate Presentation
-note over Etudiant, Presentation
-  L'étudiant remplir les réponses
-  et les commentaires anonymes
-end note
-Presentation -> Etudiant: Afficher les champs de réponse
-deactivate Presentation
+Etudiant -> Vue: Accéder au formulaire d'évaluation
+activate Vue
+Vue -> Controleur: chargerFormulaire(enseignantID)
+activate Controleur
 
-Etudiant -> Presentation: Valider et soumettre
-activate Presentation
-Presentation -> Controle: sauvegarderEvaluation(données)
-activate Controle
-Controle -> Model: enregistrerReponses(idFormulaire, reponses)
-activate Model
-Model -> BD: INSERT INTO Reponses VALUES (...)
-activate BD
-BD --> Model: Confirmation d'insertion
-deactivate BD
-Model --> Controle: Succès
-deactivate Model
-Controle -> Presentation: Succès avec ID évaluation
-deactivate Controle
-Presentation --> Etudiant: Message de confirmation
-deactivate Presentation
+Controleur -> ModeleForm: obtenirFormulaireActif(enseignantID)
+activate ModeleForm
+ModeleForm --> Controleur: Formulaire
+deactivate ModeleForm
 
-== Alternative 1: Données Invalides ==
-Etudiant -> Presentation: Soumettre avec données invalides
-activate Presentation
-Presentation -> Controle: sauvegarderEvaluation(données invalides)
-activate Controle
-Controle -> Model: validerDonnees(reponses)
-activate Model
-Model --> Controle: Erreur validation
-deactivate Model
-Controle --> Presentation: Erreur
-deactivate Controle
-Presentation --> Etudiant: Afficher les erreurs et conseils
-deactivate Presentation
+Controleur -> ModeleForm: obtenirQuestions(formulaireID)
+activate ModeleForm
+ModeleForm --> Controleur: Liste<Question>
+deactivate ModeleForm
 
-== Alternative 2: Sauvegarde Brouillon ==
-Etudiant -> Presentation: Sauvegarder comme brouillon
-activate Presentation
-Presentation -> Controle: sauvegarderBrouillon(données partielles)
-activate Controle
-Controle -> Model: enregistrerBrouillon(données)
-activate Model
-Model -> BD: INSERT INTO Brouillons VALUES (...)
-activate BD
-BD --> Model: OK
-deactivate BD
-Model --> Controle: OK
-deactivate Model
-Controle --> Presentation: Brouillon sauvegardé
-deactivate Controle
-Presentation --> Etudiant: "Brouillon sauvegardé - Vous pouvez continuer plus tard"
-deactivate Presentation
+Controleur --> Vue: DonnéesFormulaire(formulaire, questions)
+deactivate Controleur
+Vue --> Etudiant: Afficher le formulaire
+deactivate Vue
+
+loop Pour chaque question
+    Etudiant -> Vue: Saisir réponse
+    activate Vue
+    Vue -> Vue: Valider format réponse
+    Vue --> Etudiant: Confirmer saisie
+    deactivate Vue
+end
+
+opt Sauvegarder brouillon
+    Etudiant -> Vue: Sauvegarder comme brouillon
+    activate Vue
+    Vue -> Controleur: sauvegarderBrouillon(formulaireID, reponsesPartielles)
+    activate Controleur
+    
+    Controleur -> ModeleBrouillon: creerOuMettreAJourBrouillon(etudiantID, formulaireID, reponses)
+    activate ModeleBrouillon
+    ModeleBrouillon --> Controleur: Brouillon sauvegardé
+    deactivate ModeleBrouillon
+    
+    Controleur --> Vue: Confirmation sauvegarde
+    deactivate Controleur
+    Vue --> Etudiant: "Brouillon sauvegardé"
+    deactivate Vue
+end
+
+Etudiant -> Vue: Soumettre l'évaluation
+activate Vue
+Vue -> Controleur: soumettreEvaluation(formulaireID, reponses)
+activate Controleur
+
+Controleur -> Modele: validerReponses(reponses, formulaireID)
+activate Modele
+
+alt Toutes les réponses sont valides
+    Modele --> Controleur: Validation OK
+    deactivate Modele
+    
+    Controleur -> Modele: creerEvaluation(etudiantID, formulaireID)
+    activate Modele
+    Modele --> Controleur: Evaluation créée
+    deactivate Modele
+    
+    loop Pour chaque réponse
+        Controleur -> Modele: enregistrerReponse(evaluationID, questionID, contenu)
+        activate Modele
+        Modele --> Controleur: Réponse enregistrée
+        deactivate Modele
+    end
+    
+    opt Brouillon existant
+        Controleur -> ModeleBrouillon: supprimerBrouillon(etudiantID, formulaireID)
+        activate ModeleBrouillon
+        ModeleBrouillon --> Controleur: Brouillon supprimé
+        deactivate ModeleBrouillon
+    end
+    
+    Controleur -> Modele: finaliserEvaluation(evaluationID)
+    activate Modele
+    Modele --> Controleur: Evaluation finalisée
+    deactivate Modele
+    
+    Controleur --> Vue: Succès (evaluationID)
+    deactivate Controleur
+    Vue --> Etudiant: Message de confirmation
+    deactivate Vue
+
+else Données invalides
+    Modele --> Controleur: Erreurs de validation
+    deactivate Modele
+    
+    Controleur --> Vue: Erreurs (liste des erreurs)
+    deactivate Controleur
+    Vue --> Etudiant: Afficher erreurs et conseils
+    deactivate Vue
+end
+
+== Alternative 1: Évaluation déjà soumise ==
+
+Etudiant -> Vue: Accéder au formulaire
+activate Vue
+Vue -> Controleur: chargerFormulaire(enseignantID)
+activate Controleur
+
+Controleur -> Modele: verifierEvaluationExistante(etudiantID, formulaireID)
+activate Modele
+Modele --> Controleur: Evaluation déjà soumise
+deactivate Modele
+
+Controleur --> Vue: Erreur (évaluation déjà soumise)
+deactivate Controleur
+Vue --> Etudiant: "Vous avez déjà soumis cette évaluation"
+deactivate Vue
+
+== Alternative 2: Formulaire expiré ==
+
+Etudiant -> Vue: Accéder au formulaire
+activate Vue
+Vue -> Controleur: chargerFormulaire(enseignantID)
+activate Controleur
+
+Controleur -> ModeleForm: obtenirFormulaireActif(enseignantID)
+activate ModeleForm
+ModeleForm --> Controleur: Formulaire expiré ou inexistant
+deactivate ModeleForm
+
+Controleur --> Vue: Erreur (formulaire non disponible)
+deactivate Controleur
+Vue --> Etudiant: "Ce formulaire n'est plus disponible"
+deactivate Vue
+
+== Alternative 3: Reprendre un brouillon ==
+
+Etudiant -> Vue: Accéder au formulaire
+activate Vue
+Vue -> Controleur: chargerFormulaire(enseignantID)
+activate Controleur
+
+Controleur -> ModeleBrouillon: obtenirBrouillon(etudiantID, formulaireID)
+activate ModeleBrouillon
+ModeleBrouillon --> Controleur: Brouillon existant
+deactivate ModeleBrouillon
+
+opt Brouillon trouvé
+    Controleur -> ModeleForm: obtenirQuestions(formulaireID)
+    activate ModeleForm
+    ModeleForm --> Controleur: Liste<Question>
+    deactivate ModeleForm
+    
+    Controleur --> Vue: Formulaire avec réponses pré-remplies
+    deactivate Controleur
+    Vue --> Etudiant: Afficher formulaire avec brouillon chargé
+    deactivate Vue
+end
 
 @enduml
-
