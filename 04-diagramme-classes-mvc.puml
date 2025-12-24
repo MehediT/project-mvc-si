@@ -1,6 +1,8 @@
 @startuml Diagramme_Classes_MVC
+title Diagramme de Classes MVC - Système d'Évaluation des Enseignants
 skinparam classBackgroundColor #F0F0F0
 skinparam classBorderColor #333
+skinparam packageBackgroundColor #E8E8E8
 
 package "Model" {
     class Utilisateur {
@@ -13,7 +15,7 @@ package "Model" {
         - dateCreation: Date
         --
         + authentifier(): boolean
-        + obtenirProfil(): void
+        + obtenirProfil(): Utilisateur
         + mettreAJourProfil(): void
     }
 
@@ -23,7 +25,6 @@ package "Model" {
         --
         + remplirEvaluation(): void
         + consulterCommentaires(): void
-        + sauvegarderBrouillon(): void
     }
 
     class Enseignant {
@@ -31,7 +32,7 @@ package "Model" {
         - departement: string
         - dateEmbauche: Date
         --
-        + consulterEvaluations(): void
+        + consulterEvaluations(): List<Evaluation>
         + repondreAuxCommentaires(): void
         + obtenirMoyenneGlobale(): float
     }
@@ -55,9 +56,17 @@ package "Model" {
         - dateExpiration: Date
         - estActif: boolean
         --
-        + ajouter Question(): void
+        + ajouterQuestion(): void
         + supprimerQuestion(): void
         + obtenirQuestions(): List<Question>
+    }
+
+    class ModeleFormulaire {
+        --
+        + obtenirFormulaireActif(enseignantID: int): Formulaire
+        + obtenirQuestions(formulaireID: int): List<Question>
+        + verifierDisponibilite(formulaireID: int): boolean
+        + estExpire(formulaireID: int): boolean
     }
 
     class Question {
@@ -67,7 +76,7 @@ package "Model" {
         - ordreAffichage: int
         - estObligatoire: boolean
         --
-        + validerReponse(): boolean
+        + validerReponse(contenu: string): boolean
         + obtenirOptions(): List<string>
     }
 
@@ -82,7 +91,17 @@ package "Model" {
         --
         + sauvegarder(): void
         + soumettre(): void
-        + obtenir Brouillons(): void
+    }
+
+    class ModeleEvaluation {
+        --
+        + verifierEvaluationExistante(etudiantID: int, formulaireID: int): boolean
+        + validerReponses(reponses: Map, formulaireID: int): ValidationResult
+        + creerEvaluation(etudiantID: int, formulaireID: int): Evaluation
+        + enregistrerReponse(evaluationID: int, questionID: int, contenu: string): void
+        + finaliserEvaluation(evaluationID: int): void
+        + obtenirNombreEvaluations(): int
+        + obtenirEvaluationsDetaillees(): List<Evaluation>
     }
 
     class Reponse {
@@ -96,28 +115,34 @@ package "Model" {
         + valider(): boolean
     }
 
+    class Brouillon {
+        - id: int
+        - etudiant: Etudiant
+        - formulaire: Formulaire
+        - reponsesPartielles: Map<Question, string>
+        - dateModification: Date
+        --
+        + sauvegarder(): void
+        + charger(): Map<Question, string>
+    }
+
+    class ModeleBrouillon {
+        --
+        + obtenirBrouillon(etudiantID: int, formulaireID: int): Brouillon
+        + creerOuMettreAJourBrouillon(etudiantID: int, formulaireID: int, reponses: Map): Brouillon
+        + supprimerBrouillon(etudiantID: int, formulaireID: int): void
+    }
+
     class Commentaire {
         - id: int
         - reponse: Reponse
         - auteur: Utilisateur
         - texte: string
         - dateCreation: Date
-        - estAnonymme: boolean
+        - estAnonyme: boolean
         --
         + poster(): void
         + repondre(): void
-    }
-
-    class Rapport {
-        - id: int
-        - enseignant: Enseignant
-        - dateGeneration: Date
-        - periodeDebut: Date
-        - periodeFin: Date
-        --
-        + genererPDF(): File
-        + genererExcel(): File
-        + calculerStatistiques(): void
     }
 
     class Statistiques {
@@ -133,75 +158,132 @@ package "Model" {
         + comparerAvecPaires(): void
     }
 
-    ' Relations
+    class ModeleStatistiques {
+        --
+        + obtenirStatistiquesGlobales(): StatistiquesGlobales
+        + obtenirStatistiquesParPeriode(dateDebut: Date, dateFin: Date): StatistiquesPeriodes
+        + obtenirMoyennesParEnseignant(): Map<Enseignant, float>
+        + obtenirEvolutionTemporelle(): EvolutionTemporelle
+        + obtenirTendances(): Tendances
+        + obtenirDonneesFiltrees(type: TypeStatistique, dateDebut: Date, dateFin: Date): DonneesFiltrees
+        + obtenirNouvellesDonnees(): NouvellesDonnees
+        + obtenirStatistiquesCompletes(): StatistiquesCompletes
+        + filtrerDonnees(criteres: Map): DonneesFiltrees
+    }
+
+    class Rapport {
+        - id: int
+        - enseignant: Enseignant
+        - dateGeneration: Date
+        - periodeDebut: Date
+        - periodeFin: Date
+        --
+        + calculerStatistiques(): void
+    }
+
+    class ModeleRapport {
+        --
+        + compilerDonneesRapport(parametres: Map): DonneesRapport
+        + genererPDF(donnees: DonneesRapport): File
+        + genererExcel(donnees: DonneesRapport): File
+        + genererCSV(donnees: DonneesRapport): File
+        + exporter(donnees: DonneesRapport, format: FormatExport): File
+    }
+
+    ' Relations Model
     Utilisateur <|-- Etudiant
     Utilisateur <|-- Enseignant
     Utilisateur <|-- Administrateur
     
     Formulaire "*" -- "1" Enseignant
+    ModeleFormulaire ..> Formulaire : utilise
     Question "*" -- "1" Formulaire
     Evaluation "*" -- "1" Formulaire
     Evaluation "*" -- "1" Etudiant
+    ModeleEvaluation ..> Evaluation : utilise
     Reponse "*" -- "1" Evaluation
     Reponse "*" -- "1" Question
+    Brouillon "*" -- "1" Etudiant
+    Brouillon "*" -- "1" Formulaire
+    ModeleBrouillon ..> Brouillon : utilise
     Commentaire "*" -- "1" Reponse
     Commentaire "*" -- "1" Utilisateur
     Rapport "1" -- "1" Enseignant
+    ModeleRapport ..> Rapport : utilise
     Statistiques "1" -- "1" Enseignant
+    ModeleStatistiques ..> Statistiques : utilise
 }
 
 package "Contrôleur" {
     class ControleurAuthentification {
         - utilisateurCourant: Utilisateur
         --
-        + login(email, password): boolean
+        + login(email: string, password: string): boolean
         + logout(): void
         + verifierSession(): boolean
     }
 
     class ControleurEvaluation {
         - evaluationCourante: Evaluation
+        - modeleEvaluation: ModeleEvaluation
+        - modeleFormulaire: ModeleFormulaire
+        - modeleBrouillon: ModeleBrouillon
         --
-        + chargerFormulaire(enseignantID): Formulaire
-        + sauvegarderEvaluation(donnees): void
-        + sauvegarderBrouillon(donnees): void
+        + chargerFormulaire(enseignantID: int): DonneesFormulaire
+        + soumettreEvaluation(formulaireID: int, reponses: Map): ResultatSoumission
+        + sauvegarderBrouillon(formulaireID: int, reponsesPartielles: Map): void
         + validerEvaluation(): boolean
-        + soumettreEvaluation(): void
     }
 
     class ControleurTableauBord {
+        - modeleStatistiques: ModeleStatistiques
+        - modeleEvaluation: ModeleEvaluation
+        - modeleRapport: ModeleRapport
         --
-        + chargerTableauBord(): void
-        + obtenirDonneesAnalytiques(filtres): Statistiques
-        + chargerGraphiques(): void
-        + filtrerParPeriode(debut, fin): void
+        + chargerTableauBord(): DonneesTableauBord
+        + chargerTableauBord(dateDebut: Date, dateFin: Date): DonneesTableauBord
+        + genererRapport(format: FormatExport, parametres: Map): File
+        + actualiserDonnees(): DonneesActualisees
+        + exporterDonnees(criteres: Map, format: FormatExport): File
     }
 
     class ControleurFormulaire {
+        - modeleFormulaire: ModeleFormulaire
         --
         + creerFormulaire(): void
-        + modifierFormulaire(id): void
-        + supprimerFormulaire(id): void
-        + ajouter Question(formulaire): void
-        + previewFormulaire(id): void
+        + modifierFormulaire(id: int): void
+        + supprimerFormulaire(id: int): void
+        + ajouterQuestion(formulaire: Formulaire): void
+        + previewFormulaire(id: int): void
     }
 
     class ControleurUtilisateurs {
         --
         + listerUtilisateurs(): List<Utilisateur>
-        + creerUtilisateur(donnees): void
-        + modifierUtilisateur(id): void
-        + supprimerUtilisateur(id): void
-        + importerUtilisateurs(fichier): void
+        + creerUtilisateur(donnees: Map): void
+        + modifierUtilisateur(id: int): void
+        + supprimerUtilisateur(id: int): void
+        + importerUtilisateurs(fichier: File): void
     }
 
     class ControleurRapports {
+        - modeleRapport: ModeleRapport
         --
-        + genererRapport(enseignantID, periode): Rapport
-        + exporterPDF(rapport): File
-        + exporterExcel(rapport): File
-        + planifierGeneration(parametres): void
+        + genererRapport(enseignantID: int, periode: Period): Rapport
+        + exporterPDF(rapport: Rapport): File
+        + exporterExcel(rapport: Rapport): File
+        + planifierGeneration(parametres: Map): void
     }
+
+    ' Relations Contrôleur -> Model
+    ControleurEvaluation --> ModeleEvaluation
+    ControleurEvaluation --> ModeleFormulaire
+    ControleurEvaluation --> ModeleBrouillon
+    ControleurTableauBord --> ModeleStatistiques
+    ControleurTableauBord --> ModeleEvaluation
+    ControleurTableauBord --> ModeleRapport
+    ControleurFormulaire --> ModeleFormulaire
+    ControleurRapports --> ModeleRapport
 }
 
 package "Vue" {
@@ -213,35 +295,44 @@ package "Vue" {
         + redirigerVersAccueil(): void
     }
 
-    class VueFormulaire {
+    class VueEvaluation {
         - formulaire: Formulaire
+        - questions: List<Question>
+        - reponses: Map<Question, string>
         --
-        + afficherFormulaire(formulaire): void
+        + afficherFormulaire(formulaire: Formulaire, questions: List<Question>): void
         + afficherProgress(): void
+        + validerFormatReponse(reponse: string): boolean
         + afficherValidation(): void
         + afficherConfirmation(): void
+        + afficherErreurs(erreurs: List<string>): void
+        + afficherBrouillonCharge(): void
     }
 
     class VueTableauBord {
         - graphiques: List<Chart>
+        - statistiques: StatistiquesGlobales
         --
-        + afficherTableauBord(): void
+        + afficherTableauBord(donnees: DonneesTableauBord): void
         + afficherGraphiques(): void
         + afficherFiltres(): void
         + afficherStatistiques(): void
+        + mettreAJourAffichage(donnees: DonneesActualisees): void
+        + afficherErreur(message: string): void
+        + afficherAvertissement(message: string): void
     }
 
     class VueGestionFormulaires {
         --
         + afficherListeFormulaires(): void
-        + afficherEditeurfFormulaire(): void
+        + afficherEditeurFormulaire(): void
         + afficherPreview(): void
     }
 
     class VueGestionUtilisateurs {
         --
         + afficherListeUtilisateurs(): void
-        + afficherEditeurfUtilisateur(): void
+        + afficherEditeurUtilisateur(): void
         + afficherImportDialog(): void
     }
 
@@ -259,14 +350,81 @@ package "Vue" {
         + afficherNotifications(): void
     }
 
-    ' Relations Contrôleur-Vue
-    ControleurAuthentification -- VueAuthentification
-    ControleurEvaluation -- VueFormulaire
-    ControleurTableauBord -- VueTableauBord
-    ControleurFormulaire -- VueGestionFormulaires
-    ControleurUtilisateurs -- VueGestionUtilisateurs
-    ControleurRapports -- VueRapports
+    ' Relations Vue -> Contrôleur
+    VueAuthentification ..> ControleurAuthentification : utilise
+    VueEvaluation ..> ControleurEvaluation : utilise
+    VueTableauBord ..> ControleurTableauBord : utilise
+    VueGestionFormulaires ..> ControleurFormulaire : utilise
+    VueGestionUtilisateurs ..> ControleurUtilisateurs : utilise
+    VueRapports ..> ControleurRapports : utilise
+    VueCommentaires ..> ControleurEvaluation : utilise
 }
 
-@enduml
+' Types et Enums
+class ValidationResult {
+    + estValide: boolean
+    + erreurs: List<string>
+}
 
+class DonneesFormulaire {
+    + formulaire: Formulaire
+    + questions: List<Question>
+}
+
+class ResultatSoumission {
+    + succes: boolean
+    + evaluationID: int
+    + erreurs: List<string>
+}
+
+class DonneesTableauBord {
+    + statistiques: StatistiquesGlobales
+    + moyennes: Map<Enseignant, float>
+    + evolution: EvolutionTemporelle
+    + tendances: Tendances
+}
+
+class DonneesActualisees {
+    + nouvellesDonnees: boolean
+    + donnees: DonneesTableauBord
+}
+
+enum StatutEvaluation {
+    BROUILLON
+    EN_COURS
+    SOUMISE
+    FINALISEE
+}
+
+enum TypeQuestion {
+    CHOIX_MULTIPLE
+    TEXTE_LIBRE
+    NOTE
+    OUI_NON
+}
+
+enum FormatExport {
+    PDF
+    EXCEL
+    CSV
+    JSON
+}
+
+enum Role {
+    ETUDIANT
+    ENSEIGNANT
+    ADMINISTRATEUR
+}
+
+' Relations avec les types
+ControleurEvaluation ..> ValidationResult : retourne
+ControleurEvaluation ..> DonneesFormulaire : retourne
+ControleurEvaluation ..> ResultatSoumission : retourne
+ControleurTableauBord ..> DonneesTableauBord : retourne
+ControleurTableauBord ..> DonneesActualisees : retourne
+Evaluation ..> StatutEvaluation : utilise
+Question ..> TypeQuestion : utilise
+ModeleRapport ..> FormatExport : utilise
+Utilisateur ..> Role : utilise
+
+@enduml
