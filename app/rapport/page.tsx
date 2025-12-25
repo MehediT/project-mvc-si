@@ -1,7 +1,6 @@
 'use client';
 
 import React from 'react';
-import Card from '@/components/Card';
 import Image from 'next/image';
 import {
   DocumentTextIcon,
@@ -83,7 +82,7 @@ export default function RapportPage() {
           'Aucune requête SQL directe : toutes les opérations passent par les méthodes du modèle',
         ],
         analyse: 'Le diagramme montre une architecture bien structurée où chaque composant a des responsabilités claires. La gestion des brouillons améliore l\'expérience utilisateur en permettant aux étudiants de sauvegarder leur travail progressivement. La validation des données est effectuée à plusieurs niveaux (côté vue pour le format, côté modèle pour la logique métier), garantissant la qualité des données soumises. L\'absence de SQL direct dans les diagrammes garantit une abstraction de la couche de persistance, facilitant la maintenance et les tests.',
-        conclusion: 'Ce diagramme de séquence fournit une référence précise pour l\'implémentation du processus de remplissage d\'évaluation. Il documente tous les scénarios possibles et garantit que l\'architecture MVC sera respectée lors du développement.',
+        conclusion: 'Ce diagramme de séquence fournit une référence précise pour la modélisation du processus de remplissage d\'évaluation. Il documente tous les scénarios possibles et garantit que l\'architecture MVC est bien définie.',
       },
     },
     {
@@ -143,7 +142,7 @@ export default function RapportPage() {
           'Types de données et énumérations définis pour garantir la cohérence',
         ],
         analyse: 'Le diagramme de classes révèle une architecture bien pensée avec une séparation claire des responsabilités. Les classes de modèle encapsulent tous les accès aux données, permettant une abstraction complète de la couche de persistance. Cette approche facilite les tests (possibilité de mocker les modèles), la maintenance (changement de SGBD sans impact sur les autres couches), et l\'évolutivité. Les contrôleurs orchestrent les opérations sans contenir de logique métier, et les vues se concentrent uniquement sur l\'affichage. Cette architecture respecte les principes SOLID et facilite la réutilisabilité des composants.',
-        conclusion: 'Le diagramme de classes fournit une référence complète pour l\'implémentation. Il garantit que l\'architecture MVC sera respectée et que tous les composants nécessaires sont identifiés. La structure modulaire permet une évolution future du système sans impact majeur sur les composants existants.',
+        conclusion: 'Le diagramme de classes fournit une référence complète pour la modélisation du système. Il garantit que l\'architecture MVC est bien définie et que tous les composants nécessaires sont identifiés. La structure modulaire permet une évolution future du système sans impact majeur sur les composants existants.',
       },
     },
     {
@@ -169,10 +168,10 @@ export default function RapportPage() {
           'Navigation Administrateur modélisée avec 5 états : Dashboard, Gestion Utilisateurs, Création Formulaire, Génération Rapports, Configuration',
           'Toutes les transitions entre états documentées avec leurs déclencheurs (clics dans le menu)',
           'Actions spécifiques modélisées : sauvegarder brouillon, soumettre évaluation, générer rapport, prévisualiser formulaire',
-          'Routes Next.js documentées pour chaque état',
+          'Navigation documentée pour chaque état',
         ],
         analyse: 'Le diagramme montre une navigation intuitive où chaque type d\'utilisateur a accès à un ensemble d\'états adapté à ses besoins. La navigation est principalement gérée via un menu latéral cohérent, facilitant l\'orientation de l\'utilisateur. Les transitions sont claires et logiques, permettant une expérience utilisateur fluide. La modélisation des actions spécifiques (comme sauvegarder un brouillon) montre que certaines pages permettent des actions qui ne changent pas d\'état mais modifient les données.',
-        conclusion: 'Ce diagramme d\'états-transitions sert de référence pour l\'implémentation de la navigation dans l\'application. Il garantit que tous les chemins de navigation sont identifiés et que l\'expérience utilisateur sera cohérente pour tous les types d\'utilisateurs.',
+        conclusion: 'Ce diagramme d\'états-transitions sert de référence pour la modélisation de la navigation dans le système. Il garantit que tous les chemins de navigation sont identifiés et que l\'expérience utilisateur est bien définie pour tous les types d\'utilisateurs.',
       },
     },
     {
@@ -222,17 +221,17 @@ export default function RapportPage() {
 
         {/* Introduction */}
         <section className="mb-16">
-          <h2 className="text-3xl font-bold mb-6 text-primary">Introduction</h2>
-          <div className="space-y-4 text-justify text-gray-700 leading-relaxed">
+          <h2 className="text-2xl font-bold mb-6 text-primary">Introduction</h2>
+          <div className="space-y-4 text-justify text-sm text-gray-700 leading-relaxed">
             <p>
-              Ce rapport présente de manière exhaustive toutes les étapes de modélisation et de conception 
+              Ce rapport présente de manière exhaustive toutes les étapes de modélisation 
               d'un système d'évaluation des enseignants suivant l'architecture <strong>MVC (Modèle-Vue-Contrôleur)</strong>. 
               Le système permet aux étudiants d'évaluer leurs enseignants, aux enseignants de consulter leurs 
               évaluations avec des analyses avancées utilisant l'intelligence artificielle, et aux administrateurs 
               de gérer le système et générer des rapports détaillés.
             </p>
             <p>
-              Le projet a été développé en suivant une approche méthodique, en commençant par l'identification 
+              Le projet a été mené en suivant une approche méthodique, en commençant par l'identification 
               des besoins fonctionnels, puis en modélisant l'architecture, les interactions, et enfin en créant 
               des prototypes d'interface utilisateur. Chaque étape a été documentée avec des diagrammes UML 
               et BPMN, garantissant une compréhension complète du système.
@@ -240,18 +239,19 @@ export default function RapportPage() {
             <p>
               L'objectif de ce rapport est de présenter tous les diagrammes générés au cours du projet, 
               incluant les analyses effectuées et les décisions architecturales prises. Ce document présente 
-              les différentes étapes de modélisation et les diagrammes PNG correspondants.
+              les différentes étapes de modélisation, les diagrammes PNG correspondants, et les captures d'écran 
+              des interfaces.
             </p>
           </div>
         </section>
 
         {/* Objectifs du projet */}
         <section className="mb-16">
-          <h2 className="text-3xl font-bold mb-6 text-primary">Objectifs du Projet</h2>
+          <h2 className="text-2xl font-bold mb-6 text-primary">Objectifs du Projet</h2>
           <div className="space-y-4">
             <div className="bg-blue-50 p-6 rounded-lg border-l-4 border-primary">
-              <h3 className="text-xl font-semibold mb-3">Objectifs Principaux</h3>
-              <ul className="space-y-2 text-gray-700">
+              <h3 className="text-lg font-semibold mb-3">Objectifs Principaux</h3>
+              <ul className="space-y-2 text-sm text-gray-700">
                 <li className="flex items-start">
                   <span className="mr-2">•</span>
                   <span>Modéliser le système avec UML et BPMN pour garantir une compréhension complète des processus métier</span>
@@ -279,193 +279,284 @@ export default function RapportPage() {
 
         {/* Étapes détaillées */}
         <section className="mb-16">
-          <h2 className="text-3xl font-bold mb-8 text-primary">Étapes Détaillées du Projet</h2>
+          <h2 className="text-2xl font-bold mb-8 text-primary">Étapes Détaillées du Projet</h2>
           
           {etapes.map((etape, index) => (
-            <div key={etape.id} className="mb-16 page-break-inside-avoid">
-              <Card className="p-8">
-                {/* En-tête de l'étape */}
-                <div className="flex items-start gap-6 mb-8 pb-6 border-b-2 border-gray-200">
-                  <div className="w-16 h-16 bg-primary rounded-lg flex items-center justify-center text-white flex-shrink-0">
-                    {etape.icon}
+            <div key={etape.id} className={`mb-16 page-break-inside-avoid ${index > 0 ? 'page-break-before-always' : ''}`} style={index > 0 ? { pageBreakBefore: 'always' } : {}}>
+              {/* En-tête de l'étape */}
+              <div className="flex items-start gap-6 mb-8 pb-6 ">
+                <div className="w-16 h-16 bg-primary rounded-lg flex items-center justify-center text-white flex-shrink-0">
+                  {etape.icon}
+                </div>
+                <div className="flex-1">
+                  <div className="flex items-center gap-3 mb-3">
+                    <span className="text-xl font-bold text-primary">Étape {etape.id}</span>
+                    <h2 className="text-2xl font-bold">{etape.titre}</h2>
                   </div>
-                  <div className="flex-1">
-                    <div className="flex items-center gap-3 mb-3">
-                      <span className="text-2xl font-bold text-primary">Étape {etape.id}</span>
-                      <h2 className="text-3xl font-bold">{etape.titre}</h2>
-                    </div>
-                    <p className="text-xl text-text-gray mb-4">{etape.description}</p>
-                  </div>
+                  <p className="text-lg text-text-gray mb-4">{etape.description}</p>
+                </div>
+              </div>
+
+              {/* Contenu détaillé */}
+              <div className="space-y-6 text-justify text-sm text-gray-700 leading-relaxed">
+                <div>
+                  <h3 className="text-lg font-semibold mb-3 text-primary">Objectif</h3>
+                  <p>{etape.contenu.objectif}</p>
                 </div>
 
-                {/* Contenu détaillé */}
-                <div className="space-y-6 text-justify text-gray-700 leading-relaxed">
-                  <div>
-                    <h3 className="text-2xl font-semibold mb-3 text-primary">Objectif</h3>
-                    <p>{etape.contenu.objectif}</p>
-                  </div>
+                <div>
+                  <h3 className="text-lg font-semibold mb-3 text-primary">Méthodologie</h3>
+                  <ul className="space-y-2 list-disc list-inside">
+                    {etape.contenu.methodologie.map((item, idx) => (
+                      <li key={idx}>{item}</li>
+                    ))}
+                  </ul>
+                </div>
 
-                  <div>
-                    <h3 className="text-2xl font-semibold mb-3 text-primary">Méthodologie</h3>
-                    <ul className="space-y-2 list-disc list-inside">
-                      {etape.contenu.methodologie.map((item, idx) => (
-                        <li key={idx}>{item}</li>
-                      ))}
-                    </ul>
-                  </div>
+                <div>
+                  <h3 className="text-lg font-semibold mb-3 text-primary">Résultats</h3>
+                  <ul className="space-y-2 list-disc list-inside">
+                    {etape.contenu.resultats.map((item, idx) => (
+                      <li key={idx}>{item}</li>
+                    ))}
+                  </ul>
+                </div>
 
-                  <div>
-                    <h3 className="text-2xl font-semibold mb-3 text-primary">Résultats</h3>
-                    <ul className="space-y-2 list-disc list-inside">
-                      {etape.contenu.resultats.map((item, idx) => (
-                        <li key={idx}>{item}</li>
-                      ))}
-                    </ul>
-                  </div>
+                <div>
+                  <h3 className="text-lg font-semibold mb-3 text-primary">Analyse</h3>
+                  <p>{etape.contenu.analyse}</p>
+                </div>
 
-                  <div>
-                    <h3 className="text-2xl font-semibold mb-3 text-primary">Analyse</h3>
-                    <p>{etape.contenu.analyse}</p>
-                  </div>
+                <div>
+                  <h3 className="text-lg font-semibold mb-3 text-primary">Conclusion</h3>
+                  <p>{etape.contenu.conclusion}</p>
+                </div>
 
-                  <div>
-                    <h3 className="text-2xl font-semibold mb-3 text-primary">Conclusion</h3>
-                    <p>{etape.contenu.conclusion}</p>
-                  </div>
-
-                  {/* Diagramme */}
-                  <div className="mt-8 pt-6 border-t-2 border-gray-200">
-                    <h3 className="text-2xl font-semibold mb-4 text-primary">Diagramme</h3>
-                    <div className="bg-gray-50 rounded-lg p-4 overflow-x-auto">
-                      <div className="relative w-full flex justify-center">
-                        <Image
-                          src={etape.fichierPng}
-                          alt={etape.titre}
-                          width={800}
-                          height={600}
-                          className="max-w-full h-auto rounded-lg shadow-lg"
-                          style={{ objectFit: 'contain', maxWidth: '100%' }}
-                          loading="eager"
-                          priority
-                        />
-                      </div>
-                    </div>
+                {/* Diagramme */}
+                <div className="mt-8 pt-6 border-t-2 border-gray-200">
+                  <h3 className="text-lg font-semibold mb-4 text-primary">Diagramme</h3>
+                  <div className="relative w-full flex justify-center">
+                    <Image
+                      src={etape.fichierPng}
+                      alt={etape.titre}
+                      width={800}
+                      height={600}
+                      className="max-w-full h-auto"
+                      style={{ objectFit: 'contain', maxWidth: '100%' }}
+                      loading="eager"
+                      priority
+                    />
                   </div>
                 </div>
-              </Card>
+              </div>
             </div>
           ))}
         </section>
 
-        {/* Prototypes d'interface */}
-        <section className="mb-16 page-break-inside-avoid">
-          <Card className="p-8">
-            <h2 className="text-3xl font-bold mb-6 text-primary">Prototypes d'Interface Utilisateur</h2>
-            <div className="space-y-6 text-justify text-gray-700 leading-relaxed mb-8">
-              <p>
-                Les prototypes d'interface utilisateur ont été créés pour visualiser l'expérience utilisateur 
-                du système. Ces prototypes montrent la structure, les composants, et la disposition des éléments 
-                sur les différentes pages.
-              </p>
-              <p>
-                Deux ensembles de prototypes ont été créés : un pour les interfaces étudiant et un pour les 
-                interfaces administrateur. Chaque prototype illustre la mise en page et l'organisation des 
-                fonctionnalités pour chaque type d'utilisateur.
-              </p>
-            </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-              <div>
-                <h3 className="text-xl font-semibold mb-4">Prototypes IHM Étudiant</h3>
-                <div className="bg-gray-50 rounded-lg p-3">
-                  <Image
-                    src="/Prototypes_IHM_Etudiant.png"
-                    alt="Prototypes IHM Étudiant"
-                    width={500}
-                    height={350}
-                    className="w-full h-auto rounded-lg shadow-md"
-                    style={{ maxWidth: '100%' }}
-                    loading="eager"
-                    priority
-                  />
-                </div>
-                <p className="mt-4 text-sm text-gray-600">
-                  Les prototypes étudiant incluent la page de connexion, le dashboard avec les évaluations en attente, 
-                  la page de remplissage d'évaluation, et la confirmation de soumission.
-                </p>
-              </div>
-              <div>
-                <h3 className="text-xl font-semibold mb-4">Prototypes IHM Admin</h3>
-                <div className="bg-gray-50 rounded-lg p-3">
-                  <Image
-                    src="/Prototypes_IHM_Admin.png"
-                    alt="Prototypes IHM Admin"
-                    width={500}
-                    height={350}
-                    className="w-full h-auto rounded-lg shadow-md"
-                    style={{ maxWidth: '100%' }}
-                    loading="eager"
-                    priority
-                  />
-                </div>
-                <p className="mt-4 text-sm text-gray-600">
-                  Les prototypes administrateur incluent le tableau de bord, la gestion des utilisateurs, 
-                  la création de formulaires, et la génération de rapports.
-                </p>
-              </div>
-            </div>
-          </Card>
+        {/* Annexes - Captures d'écran */}
+        <section className="mb-16" style={{ pageBreakBefore: 'always' }}>
+          <h2 className="text-2xl font-bold mb-6 text-primary">Annexe - Captures d'écran de l'Application</h2>
+          <div className="space-y-6 text-justify text-sm text-gray-700 leading-relaxed mb-8">
+            <p>
+              Cette annexe présente les captures d'écran des interfaces du système. Chaque capture 
+              d'écran est présentée sur une page dédiée pour une meilleure lisibilité.
+            </p>
+          </div>
+        </section>
+
+        {/* Page d'accueil */}
+        <section className="mb-16 page-break-inside-avoid" style={{ pageBreakBefore: 'always' }}>
+          <h3 className="text-lg font-semibold mb-4">Page d'Accueil</h3>
+          <Image
+            src="/screen-accueil.png"
+            alt="Page d'accueil"
+            width={1200}
+            height={800}
+            className="w-full h-auto"
+            style={{ maxWidth: '100%' }}
+            loading="eager"
+            priority
+          />
+        </section>
+
+        {/* Dashboard Étudiant */}
+        <section className="mb-16 page-break-inside-avoid" style={{ pageBreakBefore: 'always' }}>
+          <h3 className="text-lg font-semibold mb-4">Dashboard Étudiant</h3>
+          <Image
+            src="/screen-etudiant-dashboard.png"
+            alt="Dashboard Étudiant"
+            width={1200}
+            height={800}
+            className="w-full h-auto"
+            style={{ maxWidth: '100%' }}
+            loading="eager"
+            priority
+          />
+        </section>
+
+        {/* Page d'Évaluation Étudiant */}
+        <section className="mb-16 page-break-inside-avoid" style={{ pageBreakBefore: 'always' }}>
+          <h3 className="text-lg font-semibold mb-4">Page d'Évaluation - Étudiant</h3>
+          <Image
+            src="/screen-etudiant-evaluation.png"
+            alt="Page d'évaluation"
+            width={1200}
+            height={800}
+            className="w-full h-auto"
+            style={{ maxWidth: '100%' }}
+            loading="eager"
+            priority
+          />
+        </section>
+
+        {/* Dashboard Enseignant */}
+        <section className="mb-16 page-break-inside-avoid" style={{ pageBreakBefore: 'always' }}>
+          <h3 className="text-lg font-semibold mb-4">Dashboard Enseignant</h3>
+          <Image
+            src="/screen-enseignant-dashboard.png"
+            alt="Dashboard Enseignant"
+            width={1200}
+            height={800}
+            className="w-full h-auto"
+            style={{ maxWidth: '100%' }}
+            loading="eager"
+            priority
+          />
+        </section>
+
+        {/* Mes Évaluations Enseignant */}
+        <section className="mb-16 page-break-inside-avoid" style={{ pageBreakBefore: 'always' }}>
+          <h3 className="text-lg font-semibold mb-4">Mes Évaluations - Enseignant</h3>
+          <Image
+            src="/screen-enseignant-evaluations.png"
+            alt="Mes Évaluations"
+            width={1200}
+            height={800}
+            className="w-full h-auto"
+            style={{ maxWidth: '100%' }}
+            loading="eager"
+            priority
+          />
+        </section>
+
+        {/* Analyse IA Enseignant */}
+        <section className="mb-16 page-break-inside-avoid" style={{ pageBreakBefore: 'always' }}>
+          <h3 className="text-lg font-semibold mb-4">Analyse IA - Enseignant</h3>
+          <Image
+            src="/screen-enseignant-analyse-ia.png"
+            alt="Analyse IA"
+            width={1200}
+            height={800}
+            className="w-full h-auto"
+            style={{ maxWidth: '100%' }}
+            loading="eager"
+            priority
+          />
+        </section>
+
+        {/* Dashboard Administrateur */}
+        <section className="mb-16 page-break-inside-avoid" style={{ pageBreakBefore: 'always' }}>
+          <h3 className="text-lg font-semibold mb-4">Dashboard Administrateur</h3>
+          <Image
+            src="/screen-admin-dashboard.png"
+            alt="Dashboard Administrateur"
+            width={1200}
+            height={800}
+            className="w-full h-auto"
+            style={{ maxWidth: '100%' }}
+            loading="eager"
+            priority
+          />
+        </section>
+
+        {/* Gestion Utilisateurs Admin */}
+        <section className="mb-16 page-break-inside-avoid" style={{ pageBreakBefore: 'always' }}>
+          <h3 className="text-lg font-semibold mb-4">Gestion des Utilisateurs - Administrateur</h3>
+          <Image
+            src="/screen-admin-utilisateurs.png"
+            alt="Gestion des Utilisateurs"
+            width={1200}
+            height={800}
+            className="w-full h-auto"
+            style={{ maxWidth: '100%' }}
+            loading="eager"
+            priority
+          />
+        </section>
+
+        {/* Création Formulaire Admin */}
+        <section className="mb-16 page-break-inside-avoid" style={{ pageBreakBefore: 'always' }}>
+          <h3 className="text-lg font-semibold mb-4">Création de Formulaire - Administrateur</h3>
+          <Image
+            src="/screen-admin-formulaires-creer.png"
+            alt="Création de Formulaire"
+            width={1200}
+            height={800}
+            className="w-full h-auto"
+            style={{ maxWidth: '100%' }}
+            loading="eager"
+            priority
+          />
+        </section>
+
+        {/* Génération Rapports Admin */}
+        <section className="mb-16 page-break-inside-avoid" style={{ pageBreakBefore: 'always' }}>
+          <h3 className="text-lg font-semibold mb-4">Génération de Rapports - Administrateur</h3>
+          <Image
+            src="/screen-admin-rapports.png"
+            alt="Génération de Rapports"
+            width={1200}
+            height={800}
+            className="w-full h-auto"
+            style={{ maxWidth: '100%' }}
+            loading="eager"
+            priority
+          />
         </section>
 
         {/* Conclusion générale */}
-        <section className="mb-16 page-break-inside-avoid">
-          <Card className="p-8">
-            <h2 className="text-3xl font-bold mb-6 text-primary">Conclusion Générale</h2>
-            <div className="space-y-6 text-justify text-gray-700 leading-relaxed">
-              <p>
-                Ce projet de système d'évaluation des enseignants a été mené à bien en suivant une approche 
-                méthodique et structurée. Toutes les étapes de modélisation ont été complétées avec succès, 
-                produisant une documentation complète et détaillée du système.
-              </p>
-              <div>
-                <h3 className="text-xl font-semibold mb-3">Objectifs Atteints</h3>
-                <ul className="space-y-2 list-disc list-inside">
-                  <li>Modélisation complète du système avec UML et BPMN</li>
-                  <li>Architecture MVC bien définie et documentée</li>
-                  <li>Prototypes d'interface pour tous les types d'utilisateurs</li>
-                  <li>Diagrammes de séquence détaillés pour les cas d'utilisation principaux</li>
-                  <li>Navigation et états-transitions modélisés</li>
-                  <li>Génération de tous les diagrammes en format PNG</li>
-                </ul>
-              </div>
-              <div>
-                <h3 className="text-xl font-semibold mb-3">Livrables</h3>
-                <ul className="space-y-2 list-disc list-inside">
-                  <li>9 diagrammes PlantUML (.puml) couvrant tous les aspects du système</li>
-                  <li>9 diagrammes PNG générés pour visualisation et présentation</li>
-                  <li>Prototypes d'interface utilisateur (Étudiant et Administrateur)</li>
-                  <li>Documentation complète de toutes les étapes de modélisation</li>
-                  <li>Rapport complet présentant tous les diagrammes et analyses</li>
-                </ul>
-              </div>
-              <div>
-                <h3 className="text-xl font-semibold mb-3">Points Forts</h3>
-                <ul className="space-y-2 list-disc list-inside">
-                  <li>Architecture MVC claire et bien séparée</li>
-                  <li>Modélisation complète avec UML et BPMN</li>
-                  <li>Diagrammes détaillés et bien documentés</li>
-                  <li>Documentation exhaustive de toutes les étapes</li>
-                  <li>Visualisation claire des processus métier et des interactions</li>
-                </ul>
-              </div>
+        <section className="mb-16 page-break-inside-avoid" style={{ pageBreakBefore: 'always' }}>
+          <h2 className="text-2xl font-bold mb-6 text-primary">Conclusion Générale</h2>
+          <div className="space-y-6 text-justify text-sm text-gray-700 leading-relaxed">
+            <p>
+              Ce projet de système d'évaluation des enseignants a été mené à bien en suivant une approche 
+              méthodique et structurée. Toutes les étapes de modélisation ont été complétées avec succès, 
+              produisant une documentation complète et détaillée du système.
+            </p>
+            <div>
+              <h3 className="text-lg font-semibold mb-3">Objectifs Atteints</h3>
+              <ul className="space-y-2 list-disc list-inside">
+                <li>Modélisation complète du système avec UML et BPMN</li>
+                <li>Architecture MVC bien définie et documentée</li>
+                <li>Prototypes d'interface pour tous les types d'utilisateurs</li>
+                <li>Diagrammes de séquence détaillés pour les cas d'utilisation principaux</li>
+                <li>Navigation et états-transitions modélisés</li>
+                <li>Génération de tous les diagrammes en format PNG</li>
+              </ul>
             </div>
-          </Card>
+            <div>
+              <h3 className="text-lg font-semibold mb-3">Livrables</h3>
+              <ul className="space-y-2 list-disc list-inside">
+                <li>9 diagrammes PlantUML (.puml) couvrant tous les aspects du système</li>
+                <li>9 diagrammes PNG générés pour visualisation et présentation</li>
+                <li>Prototypes d'interface utilisateur (Étudiant et Administrateur)</li>
+                <li>Documentation complète de toutes les étapes de modélisation</li>
+                <li>Rapport complet présentant tous les diagrammes et analyses</li>
+                <li>Captures d'écran des interfaces du système</li>
+              </ul>
+            </div>
+            <div>
+              <h3 className="text-lg font-semibold mb-3">Points Forts</h3>
+              <ul className="space-y-2 list-disc list-inside">
+                <li>Architecture MVC claire et bien séparée</li>
+                <li>Modélisation complète avec UML et BPMN</li>
+                <li>Diagrammes détaillés et bien documentés</li>
+                <li>Documentation exhaustive de toutes les étapes</li>
+                <li>Visualisation claire des processus métier et des interactions</li>
+              </ul>
+            </div>
+          </div>
         </section>
-
-        {/* Page de fin */}
-        <div className="text-center mt-16 pt-16 border-t-2 border-gray-300 text-gray-600">
-          <p className="text-lg">Rapport généré le 24 décembre 2024</p>
-          <p className="text-sm mt-2">Système d'Évaluation des Enseignants - Projet MVC</p>
-        </div>
       </main>
     </div>
   );

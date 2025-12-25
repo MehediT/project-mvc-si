@@ -1,0 +1,64 @@
+% Template LaTeX pour colorer les titres
+\usepackage{xcolor}
+
+% Définition des couleurs
+\definecolor{primaryblue}{RGB}{37,99,235}  % Bleu principal
+\definecolor{secondaryblue}{RGB}{59,130,246}  % Bleu secondaire
+\definecolor{darkblue}{RGB}{29,78,216}  % Bleu foncé
+
+% Redéfinition des commandes de section pour ajouter des couleurs
+\makeatletter
+\renewcommand{\@seccntformat}[1]{%
+  \textcolor{primaryblue}{\csname the#1\endcsname\quad}%
+}
+
+% Titre de niveau 1 (h1) - Bleu foncé
+\let\old@maketitle\@maketitle
+\renewcommand{\@maketitle}{%
+  \old@maketitle
+  \let\@maketitle\old@maketitle
+}
+
+% Section (h2) - Bleu principal
+\renewcommand{\section}{%
+  \@startsection{section}{1}{\z@}%
+  {-3.5ex \@plus -1ex \@minus -.2ex}%
+  {2.3ex \@plus.2ex}%
+  {\normalfont\Large\bfseries\color{primaryblue}}%
+}
+
+% Subsection (h3) - Bleu secondaire
+\renewcommand{\subsection}{%
+  \@startsection{subsection}{2}{\z@}%
+  {-3.25ex\@plus -1ex \@minus -.2ex}%
+  {1.5ex \@plus .2ex}%
+  {\normalfont\large\bfseries\color{secondaryblue}}%
+}
+
+% Subsubsection (h4) - Bleu secondaire plus clair
+\renewcommand{\subsubsection}{%
+  \@startsection{subsubsection}{3}{\z@}%
+  {-3.25ex\@plus -1ex \@minus -.2ex}%
+  {1.5ex \@plus .2ex}%
+  {\normalfont\normalsize\bfseries\color{secondaryblue}}%
+}
+
+\makeatother
+
+% Pour pandoc, on utilise une approche différente
+% On redéfinit les commandes de section après le préambule
+\AtBeginDocument{%
+  \let\oldsection\section
+  \renewcommand{\section}[1]{%
+    \oldsection{\textcolor{primaryblue}{#1}}%
+  }%
+  \let\oldsubsection\subsection
+  \renewcommand{\subsection}[1]{%
+    \oldsubsection{\textcolor{secondaryblue}{#1}}%
+  }%
+  \let\oldsubsubsection\subsubsection
+  \renewcommand{\subsubsection}[1]{%
+    \oldsubsubsection{\textcolor{secondaryblue}{#1}}%
+  }%
+}
+
