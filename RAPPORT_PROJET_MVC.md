@@ -1,3 +1,19 @@
+---
+title: "Rapport Complet du Projet MVC"
+subtitle: "Système d'Évaluation des Enseignants"
+date: "Décembre 2024"
+author: "Adil Chetouni & Mehédi Touré"
+header-includes:
+  - \usepackage{xcolor}
+  - \definecolor{primaryblue}{RGB}{37,99,235}
+  - \definecolor{secondaryblue}{RGB}{59,130,246}
+  - \makeatletter
+  - \renewcommand{\section}{\@startsection{section}{1}{\z@}{-3.5ex \@plus -1ex \@minus -.2ex}{2.3ex \@plus.2ex}{\normalfont\Large\bfseries\color{primaryblue}}}
+  - \renewcommand{\subsection}{\@startsection{subsection}{2}{\z@}{-3.25ex\@plus -1ex \@minus -.2ex}{1.5ex \@plus .2ex}{\normalfont\large\bfseries\color{secondaryblue}}}
+  - \renewcommand{\subsubsection}{\@startsection{subsubsection}{3}{\z@}{-3.25ex\@plus -1ex \@minus -.2ex}{1.5ex \@plus .2ex}{\normalfont\normalsize\bfseries\color{secondaryblue}}}
+  - \makeatother
+---
+
 # Rapport Complet du Projet MVC
 ## Système d'Évaluation des Enseignants
 
@@ -67,8 +83,6 @@ Cette étape a permis de définir clairement le périmètre fonctionnel du syst�
 
 ![Cas d'Utilisation](public/Cas_Utilisation.png)
 
----
-
 ### Étape 2 : Diagramme de Séquence - Remplir Évaluation
 
 **Description :** Modélisation du processus de remplissage d'évaluation selon l'architecture MVC
@@ -106,8 +120,6 @@ Ce diagramme de séquence fournit une référence précise pour la modélisation
 
 ![Diagramme de Séquence - Remplir Évaluation](public/Sequence_Remplir_Evaluation.png)
 
----
-
 ### Étape 3 : Diagramme de Séquence - Tableau de Bord
 
 **Description :** Modélisation du processus de consultation du tableau de bord administrateur
@@ -144,8 +156,6 @@ Ce diagramme de séquence documente un processus complexe mais bien structuré. 
 #### Diagramme
 
 ![Diagramme de Séquence - Tableau de Bord](public/Sequence_Tableau_Bord.png)
-
----
 
 ### Étape 4 : Diagramme de Classes MVC
 
@@ -188,8 +198,6 @@ Le diagramme de classes fournit une référence complète pour la modélisation 
 
 ![Diagramme de Classes MVC](public/Diagramme_Classes_MVC.png)
 
----
-
 ### Étape 5 : Diagramme d'États-Transitions - Navigation
 
 **Description :** Modélisation de la navigation dans les interfaces utilisateur
@@ -227,8 +235,6 @@ Ce diagramme d'états-transitions sert de référence pour la modélisation de l
 #### Diagramme
 
 ![Diagramme d'États-Transitions - Navigation](public/Etats_Transitions_Navigation.png)
-
----
 
 ### Étape 6 : Diagramme BPMN - Processus
 
@@ -268,8 +274,6 @@ Ce diagramme BPMN fournit une vue d'ensemble complète du processus métier. Il 
 #### Diagramme
 
 ![Diagramme BPMN - Processus](public/BPMN_Processus.png)
-
----
 
 ## Annexe - Captures d'écran de l'Application
 
@@ -315,8 +319,6 @@ Cette annexe présente les captures d'écran des interfaces du système. Chaque 
 
 ![Génération de Rapports - Administrateur](public/screen-admin-rapports.png)
 
----
-
 ## Conclusion Générale
 
 Ce projet de système d'évaluation des enseignants a été mené à bien en suivant une approche méthodique et structurée. Toutes les étapes de modélisation ont été complétées avec succès, produisant une documentation complète et détaillée du système.
@@ -349,6 +351,5 @@ Ce projet de système d'évaluation des enseignants a été mené à bien en sui
 
 ---
 
-*Rapport généré le 24 décembre 2024*  
 *Système d'Évaluation des Enseignants - Projet MVC*
 
